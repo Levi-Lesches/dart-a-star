@@ -57,7 +57,7 @@ int hueristic(Tile tile, Tile goal) {
 }
 
 Queue<Tile> a_star(Tile start, Tile goal, List<List<Tile>> map, int numRows, int numColumns) {
-  var open = new Queue<Tile>();
+  var open = <Tile>[];
   var closed = <Tile>[];
   
   var g = 0;
@@ -67,10 +67,9 @@ Queue<Tile> a_star(Tile start, Tile goal, List<List<Tile>> map, int numRows, int
   open.add(start);
   
   while (open.length > 0) {
-    int bestCost = open.first().f;
+    int bestCost = open[0].f;
     int bestTileIndex = 0;
 
-    
     for (var i = 1; i < open.length; i++) {
       if (open[i].f < bestCost) {
         bestCost = open[i].f;
