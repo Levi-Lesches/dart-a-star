@@ -1,3 +1,5 @@
+#library('a star');
+
 class Tile implements Hashable {
   final int x, y;
   final bool obstacle;
@@ -39,7 +41,7 @@ List<List<Tile>> parseTiles(String map) {
   for (var rowNum = 0; rowNum < rows.length; rowNum++) {
     var row = new List<Tile>();
     
-    var lineTiles = rows[rowNum].split("");
+    var lineTiles = rows[rowNum].trim().split("");
     for (var colNum = 0; colNum < lineTiles.length; colNum++) {
       var t = lineTiles[colNum];
       bool obstacle = t == 'x';
@@ -56,7 +58,10 @@ int hueristic(Tile tile, Tile goal) {
   return x*x+y*y;
 }
 
-Queue<Tile> a_star(Tile start, Tile goal, List<List<Tile>> map, int numRows, int numColumns) {
+Queue<Tile> a_star(Tile start, Tile goal, List<List<Tile>> map) {
+  var numRows = map.length;
+  var numColumns = map[0].length;
+  
   var open = <Tile>[];
   var closed = <Tile>[];
   
@@ -157,6 +162,6 @@ oxoooxxx
   Tile goal = tiles[3][3];
   
   for (var i = 0; i < 1000; i++) {
-    Queue<Tile> path = a_star(start, goal, tiles, 4, 8);
+    Queue<Tile> path = a_star(start, goal, tiles);
   }
 }
