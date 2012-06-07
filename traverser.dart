@@ -19,8 +19,8 @@
 class Tile implements Hashable {
   final int x, y;
   final bool obstacle;
-  final int hashcode;
-  final String str;
+  final int _hashcode;
+  final String _str;
   
   // for A*
   int _f = -1;  // heuristic + cost
@@ -29,14 +29,14 @@ class Tile implements Hashable {
   int _parentIndex = -1;
   
   Tile(int x, int y, bool obstacle)
-      : x=x,
-        y=y,
-        obstacle=obstacle,
-        hashcode = "$x,$y".hashCode(),
-        str = '[X:$x, Y:$y, X:$obstacle]';
+      : x = x,
+        y = y,
+        obstacle = obstacle,
+        _hashcode = "$x,$y".hashCode(),
+        _str = '[X:$x, Y:$y, X:$obstacle]';
   
-  String toString() => str;
-  int hashCode() => hashcode;
+  String toString() => _str;
+  int hashCode() => _hashcode;
   
   bool equals(Tile tile) {
     return x == tile.x && y == tile.y;
@@ -52,48 +52,53 @@ class Tile implements Hashable {
 
 List<List<Tile>> parseTiles(String map) {
   var tiles = <List<Tile>>[];
-  
   var rows = map.trim().split('\n');
+  
   for (var rowNum = 0; rowNum < rows.length; rowNum++) {
     var row = new List<Tile>();
-    
     var lineTiles = rows[rowNum].trim().split("");
+    
     for (var colNum = 0; colNum < lineTiles.length; colNum++) {
       var t = lineTiles[colNum];
-      bool obstacle = t == 'x';
+      bool obstacle = (t == 'x');
       row.add(new Tile(colNum, rowNum, obstacle));
     }
+    
     tiles.add(row);
   }
+  
   return tiles;
 }
 
 int hueristic(Tile tile, Tile goal) {
-  var x = tile.x-goal.x;
-  var y = tile.y-goal.y;
+  int x = tile.x-goal.x;
+  int y = tile.y-goal.y;
   return x*x+y*y;
 }
 
+// thanks to http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html
+// for the original algorithm
+
 Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
-  var numRows = map.length;
-  var numColumns = map[0].length;
+  int numRows = map.length;
+  int numColumns = map[0].length;
   
-  var open = <Tile>[];
-  var closed = <Tile>[];
+  List<Tile> open = <Tile>[];
+  List<Tile> closed = <Tile>[];
   
-  var g = 0;
-  var h = hueristic(start, goal);
-  var f = g + h;
+  int g = 0;
+  int h = hueristic(start, goal);
+  int f = g + h;
   
   open.add(start);
   
   while (open.length > 0) {
-    int bestCost = open[0].f;
+    int bestCost = open[0]._f;
     int bestTileIndex = 0;
 
     for (var i = 1; i < open.length; i++) {
-      if (open[i].f < bestCost) {
-        bestCost = open[i].f;
+      if (open[i]._f < bestCost) {
+        bestCost = open[i]._f;
         bestTileIndex = i;
       }
     }
@@ -104,9 +109,9 @@ Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
       // queues are more performant when adding to the front
       var path = new Queue<Tile>.from([goal]);
 
-      //Go up the chain to recreate the path 
-      while (currentTile.parentIndex != -1) {
-        currentTile = closed[currentTile.parentIndex];
+      // Go up the chain to recreate the path 
+      while (currentTile._parentIndex != -1) {
+        currentTile = closed[currentTile._parentIndex];
         path.addFirst(currentTile);
       }
 
@@ -115,18 +120,15 @@ Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
     
     open.removeRange(bestTileIndex, 1);
 
-    //Push it onto the closed list
-    closed.add(currentTile);
+    closed.add(currentTile);    
     
-    //print("Closed is now $closed");
-    
-    for (var newX = Math.max(0, currentTile.x-1); newX <= Math.min(numColumns-1, currentTile.x+1); newX++) {
-      for (var newY = Math.max(0, currentTile.y-1); newY <= Math.min(numRows-1, currentTile.y+1); newY++) {
-        if (!map[newY][newX].obstacle //If the new node is open
-          || (goal.x == newX && goal.y == newY)) { //or the new node is our destination
+    for (int newX = Math.max(0, currentTile.x-1); newX <= Math.min(numColumns-1, currentTile.x+1); newX++) {
+      for (int newY = Math.max(0, currentTile.y-1); newY <= Math.min(numRows-1, currentTile.y+1); newY++) {
+        if (!map[newY][newX].obstacle // If the new node is open
+          || (goal.x == newX && goal.y == newY)) { // or the new node is our destination
           //See if the node is already in our closed list. If so, skip it.
-          var foundInClosed = false;
-          for (var i = 0; i < closed.length; i++) {
+          bool foundInClosed = false;
+          for (int i = 0; i < closed.length; i++) {
             if (closed[i].x == newX && closed[i].y == newY) {
               foundInClosed = true;
               break;
@@ -138,8 +140,8 @@ Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
           }
 
           //See if the node is in our open list. If not, use it.
-          var foundInOpen = false;
-          for (var i = 0; i < open.length; i++) {
+          bool foundInOpen = false;
+          for (int i = 0; i < open.length; i++) {
             if (open[i].x == newX && open[i].y == newY) {
               foundInOpen = true;
               break;
@@ -147,10 +149,11 @@ Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
           }
 
           if (!foundInOpen) {
-            var tile = map[newY][newX];
+            Tile tile = map[newY][newX];
             tile._parentIndex = closed.length-1;
 
-            tile._g = currentTile.g + Math.sqrt(Math.pow(tile.x-currentTile.x, 2)+Math.pow(tile.y-currentTile.y, 2)).floor().toInt();
+            tile._g = currentTile._g + Math.sqrt(Math.pow(tile.x-currentTile.x, 2) +
+                      Math.pow(tile.y-currentTile.y, 2)).floor().toInt();
             tile._h = hueristic(tile, goal);
             tile._f = tile._g+tile._h;
 
