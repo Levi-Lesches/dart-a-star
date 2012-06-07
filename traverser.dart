@@ -14,7 +14,7 @@
    limitations under the License.
  */
 
-#library('a star');
+#library('aStar');
 
 class Tile implements Hashable {
   final int x, y;
@@ -23,10 +23,10 @@ class Tile implements Hashable {
   final String str;
   
   // for A*
-  int f = -1;  // heuristic + cost
-  int g = -1;  // cost
-  int h = -1;  // heuristic estimate
-  int parentIndex = -1;
+  int _f = -1;  // heuristic + cost
+  int _g = -1;  // cost
+  int _h = -1;  // heuristic estimate
+  int _parentIndex = -1;
   
   Tile(int x, int y, bool obstacle)
       : x=x,
@@ -74,7 +74,7 @@ int hueristic(Tile tile, Tile goal) {
   return x*x+y*y;
 }
 
-Queue<Tile> a_star(Tile start, Tile goal, List<List<Tile>> map) {
+Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
   var numRows = map.length;
   var numColumns = map[0].length;
   
@@ -120,41 +120,41 @@ Queue<Tile> a_star(Tile start, Tile goal, List<List<Tile>> map) {
     
     //print("Closed is now $closed");
     
-    for (var new_node_x = Math.max(0, currentTile.x-1); new_node_x <= Math.min(numColumns-1, currentTile.x+1); new_node_x++) {
-      for (var new_node_y = Math.max(0, currentTile.y-1); new_node_y <= Math.min(numRows-1, currentTile.y+1); new_node_y++) {
-        if (!map[new_node_y][new_node_x].obstacle //If the new node is open
-          || (goal.x == new_node_x && goal.y == new_node_y)) { //or the new node is our destination
+    for (var newX = Math.max(0, currentTile.x-1); newX <= Math.min(numColumns-1, currentTile.x+1); newX++) {
+      for (var newY = Math.max(0, currentTile.y-1); newY <= Math.min(numRows-1, currentTile.y+1); newY++) {
+        if (!map[newY][newX].obstacle //If the new node is open
+          || (goal.x == newX && goal.y == newY)) { //or the new node is our destination
           //See if the node is already in our closed list. If so, skip it.
-          var found_in_closed = false;
+          var foundInClosed = false;
           for (var i = 0; i < closed.length; i++) {
-            if (closed[i].x == new_node_x && closed[i].y == new_node_y) {
-              found_in_closed = true;
+            if (closed[i].x == newX && closed[i].y == newY) {
+              foundInClosed = true;
               break;
             }
           }
 
-          if (found_in_closed) {
+          if (foundInClosed) {
             continue;
           }
 
           //See if the node is in our open list. If not, use it.
-          var found_in_open = false;
+          var foundInOpen = false;
           for (var i = 0; i < open.length; i++) {
-            if (open[i].x == new_node_x && open[i].y == new_node_y) {
-              found_in_open = true;
+            if (open[i].x == newX && open[i].y == newY) {
+              foundInOpen = true;
               break;
             }
           }
 
-          if (!found_in_open) {
-            var new_node = map[new_node_y][new_node_x];
-            new_node.parentIndex = closed.length-1;
+          if (!foundInOpen) {
+            var tile = map[newY][newX];
+            tile._parentIndex = closed.length-1;
 
-            new_node.g = currentTile.g + Math.sqrt(Math.pow(new_node.x-currentTile.x, 2)+Math.pow(new_node.y-currentTile.y, 2)).floor().toInt();
-            new_node.h = hueristic(new_node, goal);
-            new_node.f = new_node.g+new_node.h;
+            tile._g = currentTile.g + Math.sqrt(Math.pow(tile.x-currentTile.x, 2)+Math.pow(tile.y-currentTile.y, 2)).floor().toInt();
+            tile._h = hueristic(tile, goal);
+            tile._f = tile._g+tile._h;
 
-            open.add(new_node);
+            open.add(tile);
           }
         }
       }
@@ -178,6 +178,6 @@ oxoooxxx
   Tile goal = tiles[3][3];
   
   for (var i = 0; i < 1000; i++) {
-    Queue<Tile> path = a_star(start, goal, tiles);
+    Queue<Tile> path = aStar(start, goal, tiles);
   }
 }

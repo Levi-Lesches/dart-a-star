@@ -134,7 +134,7 @@ main() {
   CanvasMap canvasMap = new CanvasMap(canvas, map, start, goal);
   canvasMap.drawMap();
   
-  Queue<path.Tile> solution = path.a_star(start, goal, map);
+  Queue<path.Tile> solution = path.aStar(start, goal, map);
   
   canvasMap.drawSolution(solution);
 }
