@@ -179,4 +179,6 @@ oxoooxxx
   for (var i = 0; i < 1000; i++) {
     Queue<Tile> path = a_star(start, goal, tiles, 4, 8);
   }
+  
+  print(a_star(start, goal, tiles, 4, 8));
 }
