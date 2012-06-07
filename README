@@ -1,0 +1,5 @@
+A simple A* algorithm implemented in Dart.
+
+No effort has been made to optimize this.
+
+See LICENSE file for license details.
