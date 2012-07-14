@@ -16,6 +16,13 @@
 
 #library('aStar');
 
+class Maze {
+  List<List<Tile>> tiles;
+  Tile start;
+  Tile goal;
+  Maze(this.tiles, this.start, this.goal);
+}
+
 class Tile implements Hashable {
   final int x, y;
   final bool obstacle;
@@ -33,7 +40,7 @@ class Tile implements Hashable {
         y = y,
         obstacle = obstacle,
         _hashcode = "$x,$y".hashCode(),
-        _str = '[X:$x, Y:$y, X:$obstacle]';
+        _str = '[X:$x, Y:$y, Obs:$obstacle]';
   
   String toString() => _str;
   int hashCode() => _hashcode;
@@ -50,9 +57,11 @@ class Tile implements Hashable {
   }
 }
 
-List<List<Tile>> parseTiles(String map) {
+Maze parseTiles(String map) {
   var tiles = <List<Tile>>[];
   var rows = map.trim().split('\n');
+  Tile start;
+  Tile goal;
   
   for (var rowNum = 0; rowNum < rows.length; rowNum++) {
     var row = new List<Tile>();
@@ -61,13 +70,16 @@ List<List<Tile>> parseTiles(String map) {
     for (var colNum = 0; colNum < lineTiles.length; colNum++) {
       var t = lineTiles[colNum];
       bool obstacle = (t == 'x');
-      row.add(new Tile(colNum, rowNum, obstacle));
+      var tile = new Tile(colNum, rowNum, obstacle);
+      if (t == 's') start = tile;
+      if (t == 'g') goal = tile;
+      row.add(tile);
     }
     
     tiles.add(row);
   }
   
-  return tiles;
+  return new Maze(tiles, start, goal);
 }
 
 int hueristic(Tile tile, Tile goal) {
@@ -79,7 +91,10 @@ int hueristic(Tile tile, Tile goal) {
 // thanks to http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html
 // for the original algorithm
 
-Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
+Queue<Tile> aStar(Maze maze) {
+  var map = maze.tiles;
+  var start = maze.start;
+  var goal = maze.goal;
   int numRows = map.length;
   int numColumns = map[0].length;
   
@@ -165,22 +180,4 @@ Queue<Tile> aStar(Tile start, Tile goal, List<List<Tile>> map) {
   }
   
   return new Queue<Tile>();
-}
-
-main() {
-  var map = """
-oooooooo
-oxxxxxoo
-oxxoxooo
-oxoooxxx      
-""";
-  
-  List<List<Tile>> tiles = parseTiles(map);
-  //print(tiles[2][1]);
-  Tile start = tiles[0][0];
-  Tile goal = tiles[3][3];
-  
-  for (var i = 0; i < 1000; i++) {
-    Queue<Tile> path = aStar(start, goal, tiles);
-  }
 }

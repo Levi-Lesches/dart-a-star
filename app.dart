@@ -20,7 +20,7 @@
 class CanvasMap {
   final CanvasElement canvas;
   final CanvasRenderingContext2D ctx;
-  final List<List<path.Tile>> map;
+  final path.Maze maze;
   final path.Tile startTile;
   final path.Tile goalTile;
   
@@ -31,18 +31,18 @@ class CanvasMap {
   final num tileWidth;
   final num tileHeight;
   
-  CanvasMap(canvas, map, startTile, goalTile)
+  CanvasMap(canvas, maze)
       : canvas = canvas,
-        map = map,
-        startTile = startTile,
-        goalTile = goalTile,
+        maze = maze,
+        startTile = maze.start,
+        goalTile = maze.goal,
         ctx = canvas.getContext("2d"),
         width = canvas.width,
         height = canvas.height,
-        numRows = map.length,
-        numCols = map[0].length,
-        tileWidth = canvas.width / map[0].length,
-        tileHeight = canvas.height / map.length;
+        numRows = maze.tiles.length,
+        numCols = maze.tiles[0].length,
+        tileWidth = canvas.width / maze.tiles[0].length,
+        tileHeight = canvas.height / maze.tiles[0].length;
   
   drawTile(path.Tile tile) {
     var loc = coords(tile);
@@ -89,8 +89,8 @@ class CanvasMap {
   }
   
   drawMap() {
-    for (var y = 0; y < map.length; y++) {
-      List<path.Tile> row = map[y];
+    for (var y = 0; y < maze.tiles.length; y++) {
+      List<path.Tile> row = maze.tiles[y];
       for (var x = 0; x < row.length; x++) {
         path.Tile tile = row[x];
         drawTile(tile);
@@ -121,20 +121,18 @@ main() {
   document.body.elements.add(canvas);
   
   var textMap = """
-            oooooooo
+            sooooooo
             oxxxxxoo
             oxxoxooo
-            oxoooxxx      
+            oxoogxxx      
             """;
   
-  List<List<path.Tile>> map = path.parseTiles(textMap);
-  path.Tile start = map[0][0];
-  path.Tile goal = map[3][3];
+  path.Maze maze = path.parseTiles(textMap);
   
-  CanvasMap canvasMap = new CanvasMap(canvas, map, start, goal);
+  CanvasMap canvasMap = new CanvasMap(canvas, maze);
   canvasMap.drawMap();
   
-  Queue<path.Tile> solution = path.aStar(start, goal, map);
+  Queue<path.Tile> solution = path.aStar(maze);
   
   canvasMap.drawSolution(solution);
 }
