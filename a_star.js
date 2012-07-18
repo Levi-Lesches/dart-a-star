@@ -90,7 +90,7 @@ function a_star(startXY, destinationXY, board, columns, rows)
 				{
 					//See if the node is already in our closed list. If so, skip it.
 					var found_in_closed = false;
-					for (var i in closed)
+					for (var i = 0; i < closed.length; i++)
 						if (closed[i].x == new_node_x && closed[i].y == new_node_y)
 						{
 							found_in_closed = true;
@@ -102,7 +102,7 @@ function a_star(startXY, destinationXY, board, columns, rows)
 
 					//See if the node is in our open list. If not, use it.
 					var found_in_open = false;
-					for (var i in open)
+					for (var i = 0; i < open.length; i++)
 						if (open[i].x == new_node_x && open[i].y == new_node_y)
 						{
 							found_in_open = true;
@@ -165,47 +165,50 @@ function main() {
 
   //Create the board, setting random squares to be obstacles
   var rows = 10;
-    var columns = 10;
+	var columns = 10;
 
-    //Create the board, setting random squares to be obstacles
-    var board = [];
-    for (var x = 0; x < columns; x++)
-    {
-        board[x] = [];
+	//Create the board, setting random squares to be obstacles
+	var board = [];
+	for (var x = 0; x < columns; x++)
+	{
+	    board[x] = [];
 
-        for (var y = 0; y < rows; y++)
-        {
-            //Give each square a 25% chance of being an obstacle
-            //var square = Math.floor(Math.random()*4);
-            var square = 1;
+	    for (var y = 0; y < rows; y++)
+	    {
+	        //Give each square a 25% chance of being an obstacle
+	        //var square = Math.floor(Math.random()*4);
 
-            //0 = open, 1 = obstacle
-            if (square == 0)
-                board[x][y] = 1;
-            else
-                board[x][y] = 0;
-        }
-    }
- 
-    //Set the start and destination squares
-    var start = [1, 1];
-    board[1][1] = 0;
+	        // dart's RNG sucks, so let's just make this easy
+	        // and repeatable
+	        var square = 1;
 
-    var destination = [8, 8];
-    board[8][8] = 0;
-        
-    var path;
-    
-    var startTime = new Date().getTime();
-    
-    for (var i = 0; i < 10000; i++) {
-      path = a_star(start, destination, board, rows, columns);
-    }
-    
-    var stopTime = new Date().getTime();
+	        //0 = open, 1 = obstacle
+	        if (square == 0)
+	            board[x][y] = 1;
+	        else
+	            board[x][y] = 0;
+	    }
+	}
 
-    print("Done: " + (stopTime - startTime));
-    print('Path is ' + path.length + ' long and last is ' + path[path.length-1].x + ',' + path[path.length-1].y);
+	//Set the start and destination squares
+	var start = [1, 1];
+	board[1][1] = 0;
+
+	var destination = [8, 8];
+	board[8][8] = 0;
+	    
+	var path;
+
+	var startTime = new Date().getTime();
+
+	for (var i = 0; i < 10000; i++) {
+	  path = a_star(start, destination, board, rows, columns);
+	}
+
+	var stopTime = new Date().getTime();
+
+	print("Done: " + (stopTime - startTime));
+	print('Path is ' + path.length + ' long and last is ' + path[path.length-1].x + ',' + path[path.length-1].y);
 }
 
 main();

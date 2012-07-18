@@ -172,6 +172,9 @@ main() {
       {
         //Give each square a 25% chance of being an obstacle
         //var square = (Math.random()*4).floor();
+
+        // dart's RNG sucks, so let's just make this easy
+        // and repeatable
         var square = 1;
 
         //0 = open, 1 = obstacle
