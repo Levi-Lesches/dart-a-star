@@ -1,8 +1,10 @@
-A simple A* algorithm implemented in Dart.
+A simple A* algorithm implemented in [Dart](http://dartlang.org).
+An example of path finding.
 
 Updated 2013-10.
 
-No effort has been made to optimize this.
+No effort has been made to optimize this. Ported from
+[http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html].
 
 See LICENSE file for license details.
 
