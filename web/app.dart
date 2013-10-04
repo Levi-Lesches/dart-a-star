@@ -14,15 +14,17 @@
    limitations under the License.
  */
 
-#import('dart:html');
-#import('traverser.dart', prefix:'path');
+import 'dart:html';
+import 'dart:math' as Math;
+import 'dart:collection' show Queue;
+import 'package:a_star/traverser.dart';
 
 class CanvasMap {
   final CanvasElement canvas;
   final CanvasRenderingContext2D ctx;
-  final path.Maze maze;
-  final path.Tile startTile;
-  final path.Tile goalTile;
+  final Maze maze;
+  final Tile startTile;
+  final Tile goalTile;
   
   final int width;
   final int height;
@@ -44,7 +46,7 @@ class CanvasMap {
         tileWidth = canvas.width / maze.tiles[0].length,
         tileHeight = canvas.height / maze.tiles[0].length;
   
-  drawTile(path.Tile tile) {
+  drawTile(Tile tile) {
     var loc = coords(tile);
     ctx.beginPath();
     if (tile.obstacle) {
@@ -56,7 +58,7 @@ class CanvasMap {
     ctx.fill();
   }
   
-  drawStart(path.Tile start) {
+  drawStart(Tile start) {
     var loc = coords(start);
     ctx.beginPath();
     ctx.strokeStyle = 'blue';
@@ -64,7 +66,7 @@ class CanvasMap {
     ctx.stroke();
   }
   
-  drawGoal(path.Tile start) {
+  drawGoal(Tile start) {
     var loc = coords(start);
     ctx.beginPath();
     ctx.strokeStyle = 'green';
@@ -72,7 +74,7 @@ class CanvasMap {
     ctx.stroke();
   }
   
-  drawLine(path.Tile start, path.Tile end) {
+  drawLine(Tile start, Tile end) {
     var moveTo = coords(start);
     var lineTo = coords(end);
     ctx.beginPath();
@@ -82,7 +84,7 @@ class CanvasMap {
     ctx.stroke();
   }
   
-  coords(path.Tile tile) {
+  coords(Tile tile) {
     num x = (tile.x+1)*tileWidth-(tileWidth/2);
     num y = (tile.y+1)*tileHeight-(tileHeight/2);
     return [x,y];
@@ -90,9 +92,9 @@ class CanvasMap {
   
   drawMap() {
     for (var y = 0; y < maze.tiles.length; y++) {
-      List<path.Tile> row = maze.tiles[y];
+      List<Tile> row = maze.tiles[y];
       for (var x = 0; x < row.length; x++) {
-        path.Tile tile = row[x];
+        Tile tile = row[x];
         drawTile(tile);
       }
     }
@@ -101,9 +103,9 @@ class CanvasMap {
     drawGoal(goalTile);
   }
   
-  drawSolution(Queue<path.Tile> solution) {
+  drawSolution(Queue<Tile> solution) {
     var start;
-    solution.forEach((path.Tile tile) {
+    solution.forEach((Tile tile) {
       if (start == null) {
         start = tile;
       } else {
@@ -114,25 +116,32 @@ class CanvasMap {
   }
 }
 
-
-main() {
-  var canvas = new CanvasElement(600, 800);
-  canvas.style.cssText = 'border: 1px solid black';
-  document.body.elements.add(canvas);
+void generateMapAndSolve(CanvasElement canvas) {
+  canvas.context2D.clearRect(0, 0, canvas.width, canvas.height);
   
-  var textMap = """
-            sooooooo
-            oxxxxxoo
-            oxxoxooo
-            oxoogxxx      
-            """;
-  
-  path.Maze maze = path.parseTiles(textMap);
-  
+  Maze maze = new Maze.random(width: 10, height: 10);
   CanvasMap canvasMap = new CanvasMap(canvas, maze);
   canvasMap.drawMap();
   
-  Queue<path.Tile> solution = path.aStar(maze);
+  Queue<Tile> solution = aStar(maze);
   
   canvasMap.drawSolution(solution);
+}
+
+
+main() {
+  CanvasElement canvas = query('#surface');
+  
+  ButtonElement button = query('#b')
+      ..onClick.listen((e) => generateMapAndSolve(canvas));
+  
+//  var textMap = """
+//            sooooooo
+//            oxxxxxoo
+//            oxxoxooo
+//            oxoogxxx      
+//            """;
+//  
+//  Maze maze = parseTiles(textMap);
+  
 }

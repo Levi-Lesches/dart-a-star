@@ -1,4 +1,6 @@
-#import('traverser.dart');
+import 'package:a_star/traverser.dart';
+
+// TODO: use benchmark harness
 
 main() {
   
@@ -26,11 +28,11 @@ main() {
   
   print('Starting test');
   
-  var stopwatch = new Stopwatch.start();
+  var stopwatch = new Stopwatch()..start();
   for (var i = 0; i < 10000; i++) {
     aStar(maze);
   }
   stopwatch.stop();
   
-  print(stopwatch.elapsedInMs());
+  print(stopwatch.elapsedMilliseconds);
 }

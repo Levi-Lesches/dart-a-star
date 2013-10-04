@@ -14,16 +14,62 @@
    limitations under the License.
  */
 
-#library('aStar');
+library a_star;
+
+import 'dart:math' as Math;
+import 'dart:collection';
 
 class Maze {
   List<List<Tile>> tiles;
   Tile start;
   Tile goal;
   Maze(this.tiles, this.start, this.goal);
+  
+  factory Maze.random({int width, int height}) {
+    if (width == null) throw new ArgumentError('width must not be null');
+    if (height == null) throw new ArgumentError('height must not be null');
+    
+    Math.Random rand = new Math.Random();
+    List<List<Tile>> tiles = new List<List<Tile>>();
+    
+    for (int y = 0; y < height; y++) {
+      List<Tile> row = new List<Tile>();
+      for (int x = 0; x < width; x++) {
+        row.add(new Tile(x, y, rand.nextBool()));
+      }
+      tiles.add(row);
+    }
+    
+    return new Maze(tiles, tiles[0][0], tiles[height-1][width-1]);
+  }
+  
+  factory Maze.parse(String map) {
+    List<List<Tile>> tiles = <List<Tile>>[];
+    List rows = map.trim().split('\n');
+    Tile start;
+    Tile goal;
+    
+    for (var rowNum = 0; rowNum < rows.length; rowNum++) {
+      var row = new List<Tile>();
+      var lineTiles = rows[rowNum].trim().split("");
+      
+      for (var colNum = 0; colNum < lineTiles.length; colNum++) {
+        var t = lineTiles[colNum];
+        bool obstacle = (t == 'x');
+        var tile = new Tile(colNum, rowNum, obstacle);
+        if (t == 's') start = tile;
+        if (t == 'g') goal = tile;
+        row.add(tile);
+      }
+      
+      tiles.add(row);
+    }
+    
+    return new Maze(tiles, start, goal);
+  }
 }
 
-class Tile implements Hashable {
+class Tile {
   final int x, y;
   final bool obstacle;
   final int _hashcode;
@@ -39,47 +85,16 @@ class Tile implements Hashable {
       : x = x,
         y = y,
         obstacle = obstacle,
-        _hashcode = "$x,$y".hashCode(),
+        _hashcode = "$x,$y".hashCode,
         _str = '[X:$x, Y:$y, Obs:$obstacle]';
   
   String toString() => _str;
-  int hashCode() => _hashcode;
+  int get hashCode => _hashcode;
   
-  bool equals(Tile tile) {
+  bool operator ==(Tile tile) {
     return x == tile.x && y == tile.y;
   }
-  
-  // this will go away soon when dart2js and vm implement this for us
-  bool operator ==(other) {
-    if (this === other) return true;
-    if (other == null) return false;
-    return equals(other);
-  }
-}
 
-Maze parseTiles(String map) {
-  var tiles = <List<Tile>>[];
-  var rows = map.trim().split('\n');
-  Tile start;
-  Tile goal;
-  
-  for (var rowNum = 0; rowNum < rows.length; rowNum++) {
-    var row = new List<Tile>();
-    var lineTiles = rows[rowNum].trim().split("");
-    
-    for (var colNum = 0; colNum < lineTiles.length; colNum++) {
-      var t = lineTiles[colNum];
-      bool obstacle = (t == 'x');
-      var tile = new Tile(colNum, rowNum, obstacle);
-      if (t == 's') start = tile;
-      if (t == 'g') goal = tile;
-      row.add(tile);
-    }
-    
-    tiles.add(row);
-  }
-  
-  return new Maze(tiles, start, goal);
 }
 
 int hueristic(Tile tile, Tile goal) {
@@ -92,9 +107,9 @@ int hueristic(Tile tile, Tile goal) {
 // for the original algorithm
 
 Queue<Tile> aStar(Maze maze) {
-  var map = maze.tiles;
-  var start = maze.start;
-  var goal = maze.goal;
+  List<List<Tile>> map = maze.tiles;
+  Tile start = maze.start;
+  Tile goal = maze.goal;
   int numRows = map.length;
   int numColumns = map[0].length;
   
@@ -111,18 +126,18 @@ Queue<Tile> aStar(Maze maze) {
     int bestCost = open[0]._f;
     int bestTileIndex = 0;
 
-    for (var i = 1; i < open.length; i++) {
+    for (int i = 1; i < open.length; i++) {
       if (open[i]._f < bestCost) {
         bestCost = open[i]._f;
         bestTileIndex = i;
       }
     }
     
-    var currentTile = open[bestTileIndex];
+    Tile currentTile = open[bestTileIndex];
     
     if (currentTile == goal) {
       // queues are more performant when adding to the front
-      var path = new Queue<Tile>.from([goal]);
+      Queue<Tile> path = new Queue<Tile>.from([goal]);
 
       // Go up the chain to recreate the path 
       while (currentTile._parentIndex != -1) {
@@ -133,7 +148,7 @@ Queue<Tile> aStar(Maze maze) {
       return path;
     }
     
-    open.removeRange(bestTileIndex, 1);
+    open.removeAt(bestTileIndex);
 
     closed.add(currentTile);    
     
