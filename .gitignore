@@ -1,4 +1,5 @@
 .children
 .project
-packages
 .DS_Store
+packages
+!deploy/packages
