@@ -1,0 +1,4 @@
+name: a_star
+description: A sample A* algorithm built with Dart.
+dependencies:
+  browser: any

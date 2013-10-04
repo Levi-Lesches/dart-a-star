@@ -1,2 +1,4 @@
 .children
 .project
+packages
+.DS_Store
