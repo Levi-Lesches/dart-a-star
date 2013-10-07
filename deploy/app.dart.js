@@ -1198,7 +1198,7 @@ if(b==null)return!1
 z=J.x(b)
 return typeof b==="object"&&b!==null&&!!z.$iscu&&J.de(this.hE,b.hE)},
 $iscu:true},Vs:{"":"Tp;a",
-call$1:function(a){return this.a(a)}}}],["a_star","package:a_star/traverser.dart",,S,{pW:function(a,b){var z,y,x,w,v,u
+call$1:function(a){return this.a(a)}}}],["a_star","package:a_star/astar.dart",,S,{pW:function(a,b){var z,y,x,w,v,u
 z=J.RE(a)
 y=z.gx(a)
 x=J.RE(b)
