@@ -14,7 +14,7 @@ See running example at http://sethladd.github.io/dart-a-star/deploy/
 
 # Example
 
-    import 'package:astar/astar.dart';
+    import 'package:a_star/a_star.dart';
     main() {
       String textMap = """
             sooooooo

@@ -14,7 +14,7 @@
  limitations under the License.
 */
 
-import 'package:a_star/astar.dart';
+import 'package:a_star/a_star.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 class AStarBenchmark extends BenchmarkBase {

@@ -17,7 +17,7 @@
 import 'dart:html';
 import 'dart:math' as Math;
 import 'dart:collection' show Queue;
-import 'package:a_star/astar.dart';
+import 'package:a_star/a_star.dart';
 
 class CanvasMap {
   final CanvasElement canvas;
