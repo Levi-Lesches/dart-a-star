@@ -76,9 +76,9 @@ class Tile {
   final String _str;
   
   // for A*
-  int _f = -1;  // heuristic + cost
-  int _g = -1;  // cost
-  int _h = -1;  // heuristic estimate
+  double _f = -1.0;  // heuristic + cost
+  double _g = -1.0;  // cost
+  double _h = -1.0;  // heuristic estimate
   int _parentIndex = -1;
   
   Tile(int x, int y, bool obstacle)
@@ -97,10 +97,10 @@ class Tile {
 
 }
 
-int hueristic(Tile tile, Tile goal) {
+double hueristic(Tile tile, Tile goal) {
   int x = tile.x-goal.x;
   int y = tile.y-goal.y;
-  return x*x+y*y;
+  return Math.sqrt(x*x+y*y);
 }
 
 // thanks to http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html
@@ -116,14 +116,14 @@ Queue<Tile> aStar(Maze maze) {
   List<Tile> open = <Tile>[];
   List<Tile> closed = <Tile>[];
   
-  int g = 0;
-  int h = hueristic(start, goal);
-  int f = g + h;
+  double g = 0.0;
+  double h = hueristic(start, goal);
+  double f = g + h;
   
   open.add(start);
   
   while (open.length > 0) {
-    int bestCost = open[0]._f;
+    double bestCost = open[0]._f;
     int bestTileIndex = 0;
 
     for (int i = 1; i < open.length; i++) {
@@ -183,7 +183,7 @@ Queue<Tile> aStar(Maze maze) {
             tile._parentIndex = closed.length-1;
 
             tile._g = currentTile._g + Math.sqrt(Math.pow(tile.x-currentTile.x, 2) +
-                      Math.pow(tile.y-currentTile.y, 2)).floor().toInt();
+                      Math.pow(tile.y-currentTile.y, 2));
             tile._h = hueristic(tile, goal);
             tile._f = tile._g+tile._h;
 
