@@ -29,3 +29,7 @@ See running example at http://sethladd.github.io/dart-a-star/deploy/
 # Reporting bugs
 
 Please file bugs at https://github.com/sethladd/dart-a-star/issues
+
+# Contributors
+
+* https://github.com/PedersenThomas

@@ -2,7 +2,7 @@ name: a_star
 description: A sample A* algorithm built with Dart.
 author: Seth Ladd <sethladd@gmail.com>
 homepage: https://github.com/sethladd/dart-a-star
-version: 0.1.1
+version: 0.2.0
 dependencies:
   browser: any
 dev_dependencies:
