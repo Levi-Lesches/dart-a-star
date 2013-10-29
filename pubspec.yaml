@@ -4,6 +4,7 @@ author: Seth Ladd <sethladd@gmail.com>
 homepage: https://github.com/sethladd/dart-a-star
 version: 0.2.0
 dependencies:
-  browser: any
 dev_dependencies:
+  browser: any
   benchmark_harness: any
+  unittest: any  
