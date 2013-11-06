@@ -17,7 +17,7 @@
 import 'dart:html';
 import 'dart:math' as Math;
 import 'dart:collection' show Queue;
-import 'package:a_star/a_star.dart';
+import 'package:a_star/a_star_2d.dart';
 
 class CanvasMap {
   final CanvasElement canvas;
@@ -123,7 +123,7 @@ void generateMapAndSolve(CanvasElement canvas) {
   CanvasMap canvasMap = new CanvasMap(canvas, maze);
   canvasMap.drawMap();
   
-  Queue<Tile> solution = aStar(maze);
+  Queue<Tile> solution = aStar2D(maze);
   
   canvasMap.drawSolution(solution);
 }

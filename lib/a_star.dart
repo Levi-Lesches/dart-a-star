@@ -16,183 +16,175 @@
 
 library a_star;
 
-import 'dart:math' as Math;
 import 'dart:collection';
+import 'dart:async';
 
-class Maze {
-  List<List<Tile>> tiles;
-  Tile start;
-  Tile goal;
-  Maze(this.tiles, this.start, this.goal);
+/**
+ * The A* class works on any class that implements the [Graph] interface.
+ */
+abstract class Graph<T extends Node> {
+  /**
+   * Returns an [Iterable] of all the nodes of the [Graph]. This is accessed
+   * only during the setup phase, so it's not critical to optimize this.
+   * 
+   * If you have a 2D [List] of Lists called [:tiles:], for example, you can 
+   * simply do:
+   *     get allNodes => tiles.expand((row) => row);
+   */
+  Iterable<T> get allNodes;
   
-  factory Maze.random({int width, int height}) {
-    if (width == null) throw new ArgumentError('width must not be null');
-    if (height == null) throw new ArgumentError('height must not be null');
-    
-    Math.Random rand = new Math.Random();
-    List<List<Tile>> tiles = new List<List<Tile>>();
-    
-    for (int y = 0; y < height; y++) {
-      List<Tile> row = new List<Tile>();
-      for (int x = 0; x < width; x++) {
-        row.add(new Tile(x, y, rand.nextBool()));
-      }
-      tiles.add(row);
-    }
-    
-    return new Maze(tiles, tiles[0][0], tiles[height-1][width-1]);
+  /**
+   * Given two adjancent Nodes, returns the cost (distance) from [a] to [b] (the
+   * direction can matter). Returns [:null:] if [b] is not reachable from [a].
+   */
+  num getDistance(T a, T b);
+  
+  /**
+   * Given two nodes (not necessarily adjancent), returns an estimate of the 
+   * distance between them. The better the estimate, the more direct is
+   * the search. But better estimates also often mean slower performance.
+   * (The search works even if the return from the heuristic function is 
+   * constant. The A* search becomes breadth-first search.)
+   * 
+   * Optimize this first.
+   */
+  num getHeuristicDistance(T a, T b);
+  
+  /**
+   * Given a node, return all connected nodes.
+   */
+  Iterable<T> getNeighboursOf(T node);
+}
+
+/**
+ * Mixin class with which the [Graph]'s nodes should be extended. For example:
+ * 
+ *     class MyMapTile extends Object with Node { /* ... */ }
+ *     
+ * Or, in some cases, your graph nodes will already be extending something
+ * else, so:
+ * 
+ *     class MyTraversableTile extends MyTile with Node { /* ... */ }
+ */
+class Node extends Object {
+  num _f;
+  num _g;
+  Node _parent;
+  bool _isInOpenSet = false;  // Much faster than finding nodes in iterables.
+  bool _isInClosedSet = false;
+}
+
+/**
+ * The A* Star algorithm itself. Instantiated with a [Graph] (e.g., a map).
+ */
+class AStar<T extends Node> {
+  final Graph<T> graph;
+  
+  AStar(Graph<T> this.graph);
+  // TODO: cacheNeighbours option - tells AStar that the graph is not changing
+  // in terms of which nodes are neighbouring which nodes
+  // TODO: cacheDistances option - tells AStar that the graph is not changing
+  // in terms of traversal costs between nodes.
+  
+  bool _zeroed = true;
+  
+  final Queue<T> NO_VALID_PATH = new Queue<T>();
+  
+  void _zeroNodes() {
+    graph.allNodes.forEach((Node node) {
+      node._isInClosedSet = false;
+      node._isInOpenSet = false;
+      node._parent = null;
+      // No need to zero out f and g, A* doesn't depend on them being set
+      // to 0 (it overrides them on first access to each node).
+    });
+    _zeroed = true;
   }
   
-  factory Maze.parse(String map) {
-    List<List<Tile>> tiles = <List<Tile>>[];
-    List rows = map.trim().split('\n');
-    Tile start;
-    Tile goal;
+  /**
+   * Perform A* search from [start] to [goal] asynchronously.
+   * 
+   * Returns a [Future] that completes with the path [Queue]. (Empty [Queue]
+   * means no valid path from start to goal was found.
+   * 
+   * TODO: Optional weighing for suboptimal, but faster path finding.
+   * http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
+   */
+  Future<Queue<T>> findPath(T start, T goal) {
+    return new Future<Queue<T>>(() => findPathSync(start, goal));
+  }
+  
+  /**
+   * Perform A* search from [start] to [goal].
+   * 
+   * Returns empty [Queue] when there is no path between the two nodes.
+   * 
+   * TODO: Optional weighing for suboptimal, but faster path finding.
+   * http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
+   */
+  Queue<T> findPathSync(T start, T goal) {
+    if (!_zeroed) _zeroNodes();
     
-    for (var rowNum = 0; rowNum < rows.length; rowNum++) {
-      var row = new List<Tile>();
-      var lineTiles = rows[rowNum].trim().split("");
+    final Queue<T> open = new Queue<T>();
+    Node lastClosed;
+    
+    open.add(start);
+    start._isInOpenSet = true;
+    start._f = -1.0;
+    start._g = -1.0;
+    
+    _zeroed = false;
+    
+    while (open.isNotEmpty) {
+      // Find node with best (lowest) cost.
+      T currentNode = open.fold(null, (T a, T b) {
+        if (a == null) return b;
+        return a._f < b._f ? a : b;
+      });
       
-      for (var colNum = 0; colNum < lineTiles.length; colNum++) {
-        var t = lineTiles[colNum];
-        bool obstacle = (t == 'x');
-        var tile = new Tile(colNum, rowNum, obstacle);
-        if (t == 's') start = tile;
-        if (t == 'g') goal = tile;
-        row.add(tile);
+      if (currentNode == goal) {
+        // queues are more performant when adding to the front
+        final Queue<T> path = new Queue<T>();
+        path.add(goal);
+        
+        // Go up the chain to recreate the path 
+        while (currentNode._parent != null) {
+          currentNode = currentNode._parent;
+          path.addFirst(currentNode);
+        }
+        
+        return path;
       }
       
-      tiles.add(row);
-    }
-    
-    return new Maze(tiles, start, goal);
-  }
-}
-
-class Tile {
-  final int x, y;
-  final bool obstacle;
-  final int _hashcode;
-  final String _str;
-  
-  // for A*
-  double _f = -1.0;  // heuristic + cost
-  double _g = -1.0;  // cost
-  double _h = -1.0;  // heuristic estimate
-  int _parentIndex = -1;
-  
-  Tile(int x, int y, bool obstacle)
-      : x = x,
-        y = y,
-        obstacle = obstacle,
-        _hashcode = "$x,$y".hashCode,
-        _str = '[X:$x, Y:$y, Obs:$obstacle]';
-  
-  String toString() => _str;
-  int get hashCode => _hashcode;
-  
-  bool operator ==(Tile tile) {
-    return x == tile.x && y == tile.y;
-  }
-
-}
-
-double hueristic(Tile tile, Tile goal) {
-  int x = tile.x-goal.x;
-  int y = tile.y-goal.y;
-  return Math.sqrt(x*x+y*y);
-}
-
-// thanks to http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html
-// for the original algorithm
-
-Queue<Tile> aStar(Maze maze) {
-  List<List<Tile>> map = maze.tiles;
-  Tile start = maze.start;
-  Tile goal = maze.goal;
-  int numRows = map.length;
-  int numColumns = map[0].length;
-  
-  List<Tile> open = <Tile>[];
-  List<Tile> closed = <Tile>[];
-  
-  double g = 0.0;
-  double h = hueristic(start, goal);
-  double f = g + h;
-  
-  open.add(start);
-  
-  while (open.length > 0) {
-    double bestCost = open[0]._f;
-    int bestTileIndex = 0;
-
-    for (int i = 1; i < open.length; i++) {
-      if (open[i]._f < bestCost) {
-        bestCost = open[i]._f;
-        bestTileIndex = i;
-      }
-    }
-    
-    Tile currentTile = open[bestTileIndex];
-    
-    if (currentTile == goal) {
-      // queues are more performant when adding to the front
-      Queue<Tile> path = new Queue<Tile>.from([goal]);
-
-      // Go up the chain to recreate the path 
-      while (currentTile._parentIndex != -1) {
-        currentTile = closed[currentTile._parentIndex];
-        path.addFirst(currentTile);
-      }
-
-      return path;
-    }
-    
-    open.removeAt(bestTileIndex);
-
-    closed.add(currentTile);    
-    
-    for (int newX = Math.max(0, currentTile.x-1); newX <= Math.min(numColumns-1, currentTile.x+1); newX++) {
-      for (int newY = Math.max(0, currentTile.y-1); newY <= Math.min(numRows-1, currentTile.y+1); newY++) {
-        if (!map[newY][newX].obstacle // If the new node is open
-          || (goal.x == newX && goal.y == newY)) { // or the new node is our destination
-          //See if the node is already in our closed list. If so, skip it.
-          bool foundInClosed = false;
-          for (int i = 0; i < closed.length; i++) {
-            if (closed[i].x == newX && closed[i].y == newY) {
-              foundInClosed = true;
-              break;
-            }
-          }
-
-          if (foundInClosed) {
+      open.remove(currentNode);
+      currentNode._isInOpenSet = false;  // Much faster than finding nodes 
+                                         // in iterables.
+      lastClosed = currentNode;
+      currentNode._isInClosedSet = true;
+      
+      for (final T candidate in graph.getNeighboursOf(currentNode)) {
+        num distance = graph.getDistance(currentNode, candidate);
+        if (distance != null || (candidate == goal)) {  
+          // If the new node is open or the new node is our destination.
+          if (candidate._isInClosedSet) {
             continue;
           }
-
-          //See if the node is in our open list. If not, use it.
-          bool foundInOpen = false;
-          for (int i = 0; i < open.length; i++) {
-            if (open[i].x == newX && open[i].y == newY) {
-              foundInOpen = true;
-              break;
-            }
-          }
-
-          if (!foundInOpen) {
-            Tile tile = map[newY][newX];
-            tile._parentIndex = closed.length-1;
-
-            tile._g = currentTile._g + Math.sqrt(Math.pow(tile.x-currentTile.x, 2) +
-                      Math.pow(tile.y-currentTile.y, 2));
-            tile._h = hueristic(tile, goal);
-            tile._f = tile._g+tile._h;
-
-            open.add(tile);
+          
+          if (!candidate._isInOpenSet) {
+            candidate._parent = lastClosed;
+            
+            candidate._g = currentNode._g + distance;
+            num h = graph.getHeuristicDistance(candidate, goal);
+            candidate._f = candidate._g + h;
+            
+            open.add(candidate);
+            candidate._isInOpenSet = true;
           }
         }
       }
     }
+    
+    // No path found.
+    return NO_VALID_PATH;
   }
-  
-  return new Queue<Tile>();
 }
