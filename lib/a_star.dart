@@ -126,7 +126,6 @@ class AStar<T extends Node> {
     if (!_zeroed) _zeroNodes();
 
     final Queue<T> open = new Queue<T>();
-    Node lastClosed;
 
     open.add(start);
     start._isInOpenSet = true;
@@ -159,7 +158,6 @@ class AStar<T extends Node> {
       open.remove(currentNode);
       currentNode._isInOpenSet = false;  // Much faster than finding nodes
                                          // in iterables.
-      lastClosed = currentNode;
       currentNode._isInClosedSet = true;
 
       for (final T candidate in graph.getNeighboursOf(currentNode)) {
@@ -170,8 +168,8 @@ class AStar<T extends Node> {
             continue;
           }
 
-          if (!candidate._isInOpenSet) {
-            candidate._parent = lastClosed;
+          if (!candidate._isInOpenSet || candidate._g > currentNode._g + distance) {
+            candidate._parent = currentNode;
 
             candidate._g = currentNode._g + distance;
             num h = graph.getHeuristicDistance(candidate, goal);
