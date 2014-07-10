@@ -18,6 +18,7 @@ library a_star;
 
 import 'dart:collection';
 import 'dart:async';
+import 'package:collection/collection.dart';
 
 /**
  * The A* class works on any class that implements the [Graph] interface.
@@ -86,6 +87,7 @@ class AStar<T extends Node> {
   // TODO: cacheDistances option - tells AStar that the graph is not changing
   // in terms of traversal costs between nodes.
 
+  final PriorityQueue<T> _open = new HeapPriorityQueue<T>((l, r) => l._f.compareTo(r._f));
   bool _zeroed = true;
 
   final Queue<T> NO_VALID_PATH = new Queue<T>();
@@ -125,21 +127,17 @@ class AStar<T extends Node> {
   Queue<T> findPathSync(T start, T goal) {
     if (!_zeroed) _zeroNodes();
 
-    final Queue<T> open = new Queue<T>();
-
-    open.add(start);
+    _open.clear();
+    _open.add(start);
     start._isInOpenSet = true;
     start._f = -1.0;
     start._g = -1.0;
 
     _zeroed = false;
 
-    while (open.isNotEmpty) {
+    while (_open.isNotEmpty) {
       // Find node with best (lowest) cost.
-      T currentNode = open.fold(null, (T a, T b) {
-        if (a == null) return b;
-        return a._f < b._f ? a : b;
-      });
+      T currentNode = _open.removeFirst();
 
       if (currentNode == goal) {
         // queues are more performant when adding to the front
@@ -155,7 +153,6 @@ class AStar<T extends Node> {
         return path;
       }
 
-      open.remove(currentNode);
       currentNode._isInOpenSet = false;  // Much faster than finding nodes
                                          // in iterables.
       currentNode._isInClosedSet = true;
@@ -175,7 +172,7 @@ class AStar<T extends Node> {
             num h = graph.getHeuristicDistance(candidate, goal);
             candidate._f = candidate._g + h;
 
-            open.add(candidate);
+            _open.add(candidate);
             candidate._isInOpenSet = true;
           }
         }

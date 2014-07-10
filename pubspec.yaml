@@ -1,10 +1,11 @@
 name: a_star
-description: A sample A* algorithm built with Dart.
-author: Seth Ladd <sethladd@gmail.com>
-homepage: https://github.com/sethladd/dart-a-star
 version: 0.3.0
+author: Seth Ladd <sethladd@gmail.com>
+description: A sample A* algorithm built with Dart.
+homepage: https://github.com/sethladd/dart-a-star
 dependencies:
+  collection: any
 dev_dependencies:
-  browser: any
   benchmark_harness: any
-  unittest: any  
+  browser: any
+  unittest: any
