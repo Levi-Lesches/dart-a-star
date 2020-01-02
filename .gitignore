@@ -2,5 +2,7 @@
 .project
 .DS_Store
 packages
+.packages
 !deploy/packages
 pubspec.lock
+.dart_tool
