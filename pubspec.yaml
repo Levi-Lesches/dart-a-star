@@ -5,6 +5,5 @@ homepage: https://github.com/sethladd/dart-a-star
 version: 0.3.0
 dependencies:
 dev_dependencies:
-  browser: any
   benchmark_harness: any
-  unittest: any  
+  test: any

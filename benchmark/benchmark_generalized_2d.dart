@@ -28,16 +28,16 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   List<List<GeneralizedTile>> tiles = new List();
   GeneralizedTile start;
   GeneralizedTile goal;
-  
+
   int numColumns;
   int numRows;
-  
+
   GeneralizedMaze(String map) {
-    var maze = new Maze.parse(map);  // Lazy. Outsource parsing to the original.
-    
+    var maze = new Maze.parse(map); // Lazy. Outsource parsing to the original.
+
     numRows = maze.tiles.length;
     numColumns = maze.tiles[0].length;
-    
+
     for (int i = 0; i < numRows; i++) {
       var row = new List<GeneralizedTile>();
       tiles.add(row);
@@ -46,11 +46,10 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
         row.add(new GeneralizedTile(orig.x, orig.y, orig.obstacle));
       }
     }
-    
+
     start = tiles[maze.start.y][maze.start.x];
     goal = tiles[maze.goal.y][maze.goal.x];
   }
-  
 
   Iterable<GeneralizedTile> get allNodes {
     return tiles.expand((row) => row);
@@ -58,20 +57,23 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
 
   num getDistance(GeneralizedTile a, GeneralizedTile b) {
     if (b.obstacle) return null;
-    return Math.sqrt(Math.pow(b.x-a.x, 2) +
-        Math.pow(b.y-a.y, 2));
+    return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
   }
 
   num getHeuristicDistance(GeneralizedTile tile, GeneralizedTile goal) {
-    int x = tile.x-goal.x;
-    int y = tile.y-goal.y;
-    return Math.sqrt(x*x+y*y);
+    int x = tile.x - goal.x;
+    int y = tile.y - goal.y;
+    return Math.sqrt(x * x + y * y);
   }
 
-  Iterable<Tile> getNeighboursOf(GeneralizedTile currentTile) {
+  Iterable<GeneralizedTile> getNeighboursOf(GeneralizedTile currentTile) {
     Queue<GeneralizedTile> result = new Queue<GeneralizedTile>();
-    for (int newX = Math.max(0, currentTile.x-1); newX <= Math.min(numColumns-1, currentTile.x+1); newX++) {
-      for (int newY = Math.max(0, currentTile.y-1); newY <= Math.min(numRows-1, currentTile.y+1); newY++) {
+    for (int newX = Math.max(0, currentTile.x - 1);
+        newX <= Math.min(numColumns - 1, currentTile.x + 1);
+        newX++) {
+      for (int newY = Math.max(0, currentTile.y - 1);
+          newY <= Math.min(numRows - 1, currentTile.y + 1);
+          newY++) {
         result.add(tiles[newY][newX]);
       }
     }
@@ -96,16 +98,16 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
       oxxoxoooxoxx
       oxoooxxxooog
       """;
-  
+
   AStar2DGeneralizedBenchmark() : super("AStar_Generalized_2D");
 
   // The benchmark code.
   void run() {
     resultQueue = aStar.findPathSync(maze.start, maze.goal);
   }
-  
+
   GeneralizedMaze maze;
-  Queue<Tile> resultQueue;
+  Queue<GeneralizedTile> resultQueue;
   AStar aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
@@ -115,7 +117,7 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
   }
 
   // Not measures teardown code executed after the benchark runs.
-  void teardown() { 
+  void teardown() {
     print(resultQueue);
   }
 }
