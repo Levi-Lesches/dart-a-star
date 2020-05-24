@@ -87,8 +87,8 @@ void main() {
     });
 
     test("doesn't find if blocked by impassable", () {
-      network.c.nodeInherentCost = null;
-      network.d.nodeInherentCost = null;
+      network.c.nodeInherentCost = double.infinity;
+      network.d.nodeInherentCost = double.infinity;
       final path = aStar.findPathSync(network.start, network.goal);
       expect(path, isEmpty);
     });

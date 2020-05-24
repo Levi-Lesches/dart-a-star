@@ -147,7 +147,7 @@ class AStar<T extends Node<T>> {
 
       for (final candidate in graph.getNeighboursOf(currentNode)) {
         final distance = graph.getDistance(currentNode, candidate);
-        if (distance != null || (candidate == goal)) {
+        if (distance != double.infinity || (candidate == goal)) {
           // If the new node is open or the new node is our destination.
           if (candidate._isInClosedSet) {
             continue;
