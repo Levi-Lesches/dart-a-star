@@ -108,7 +108,7 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
 
   GeneralizedMaze maze;
   Queue<GeneralizedTile> resultQueue;
-  AStar aStar;
+  AStar<GeneralizedTile> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
   void setup() {

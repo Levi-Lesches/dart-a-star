@@ -107,7 +107,7 @@ class AStarBenchmark extends BenchmarkBase {
   
   Simple2DMaze maze;
   Queue<Simple2DNode> resultQueue;
-  AStar aStar;
+  AStar<Simple2DNode> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
   void setup() {
