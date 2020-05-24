@@ -71,7 +71,7 @@ class AStar<T extends Node<T>> {
 
   bool _zeroed = true;
 
-  final Queue<T> NO_VALID_PATH = Queue<T>();
+  final Queue<T> noValidPath = Queue<T>();
 
   void _zeroNodes() {
     for (final node in graph.allNodes) {
@@ -168,6 +168,6 @@ class AStar<T extends Node<T>> {
     }
 
     // No path found.
-    return NO_VALID_PATH;
+    return noValidPath;
   }
 }
