@@ -109,14 +109,14 @@ class CanvasMap {
 
   drawSolution(Queue<Tile> solution) {
     Tile start;
-    solution.forEach((Tile tile) {
+    for (final tile in solution) {
       if (start == null) {
         start = tile;
       } else {
         drawLine(start, tile);
         start = tile;
       }
-    });
+    }
   }
 }
 

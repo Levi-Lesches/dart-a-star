@@ -79,14 +79,14 @@ class AStar<T extends Node<T>> {
   final Queue<T> NO_VALID_PATH = Queue<T>();
 
   void _zeroNodes() {
-    graph.allNodes.forEach((Node node) {
+    for (final node in graph.allNodes) {
       node
         .._isInClosedSet = false
         .._isInOpenSet = false
         .._parent = null;
       // No need to zero out f and g, A* doesn't depend on them being set
       // to 0 (it overrides them on first access to each node).
-    });
+    }
     _zeroed = true;
   }
 
