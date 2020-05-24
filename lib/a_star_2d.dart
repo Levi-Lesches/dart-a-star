@@ -27,8 +27,12 @@ class Maze {
   Maze(this.tiles, this.start, this.goal);
 
   factory Maze.random({int width, int height}) {
-    if (width == null) throw ArgumentError('width must not be null');
-    if (height == null) throw ArgumentError('height must not be null');
+    if (width == null) {
+      throw ArgumentError('width must not be null');
+    }
+    if (height == null) {
+      throw ArgumentError('height must not be null');
+    }
 
     final rand = Math.Random();
     final tiles = List<List<Tile>>();
@@ -58,8 +62,12 @@ class Maze {
         final t = lineTiles[colNum];
         final obstacle = (t == 'x');
         final tile = Tile(colNum, rowNum, obstacle);
-        if (t == 's') start = tile;
-        if (t == 'g') goal = tile;
+        if (t == 's') {
+          start = tile;
+        }
+        if (t == 'g') {
+          goal = tile;
+        }
         row.add(tile);
       }
 

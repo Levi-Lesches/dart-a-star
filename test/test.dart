@@ -56,9 +56,15 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
   @override
   num getHeuristicDistance(SimpleNode node, SimpleNode goalNode) {
     assert(goalNode == goal);
-    if (node == start) return 3;
-    if (node == a || node == b) return 2;
-    if (node == c || node == d) return 1;
+    if (node == start) {
+      return 3;
+    }
+    if (node == a || node == b) {
+      return 2;
+    }
+    if (node == c || node == d) {
+      return 1;
+    }
     return 0;
   }
 

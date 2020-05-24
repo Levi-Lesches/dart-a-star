@@ -108,7 +108,9 @@ class AStar<T extends Node<T>> {
   /// TODO: Optional weighing for suboptimal, but faster path finding.
   /// http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
   Queue<T> findPathSync(T start, T goal) {
-    if (!_zeroed) _zeroNodes();
+    if (!_zeroed) {
+      _zeroNodes();
+    }
 
     final open = Queue<T>();
     T lastClosed;
@@ -124,7 +126,9 @@ class AStar<T extends Node<T>> {
     while (open.isNotEmpty) {
       // Find node with best (lowest) cost.
       var currentNode = open.fold(null, (T a, T b) {
-        if (a == null) return b;
+        if (a == null) {
+          return b;
+        }
         return a._f < b._f ? a : b;
       });
 

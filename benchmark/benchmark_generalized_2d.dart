@@ -58,7 +58,9 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
 
   @override
   num getDistance(GeneralizedTile a, GeneralizedTile b) {
-    if (b.obstacle) return null;
+    if (b.obstacle) {
+      return null;
+    }
     return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
   }
 
