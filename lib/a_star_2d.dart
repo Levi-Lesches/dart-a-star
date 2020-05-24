@@ -90,11 +90,8 @@ class Tile {
   double _h = -1.0; // heuristic estimate
   int _parentIndex = -1;
 
-  Tile(int x, int y, bool obstacle)
-      : x = x,
-        y = y,
-        obstacle = obstacle,
-        _hashcode = '$x,$y'.hashCode,
+  Tile(this.x, this.y, this.obstacle)
+      : _hashcode = '$x,$y'.hashCode,
         _str = '[X:$x, Y:$y, Obs:$obstacle]';
 
   @override

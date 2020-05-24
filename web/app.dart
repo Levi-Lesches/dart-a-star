@@ -33,10 +33,8 @@ class CanvasMap {
   final num tileWidth;
   final num tileHeight;
 
-  CanvasMap(CanvasElement canvas, Maze maze)
-      : canvas = canvas,
-        maze = maze,
-        startTile = maze.start,
+  CanvasMap(this.canvas, this.maze)
+      : startTile = maze.start,
         goalTile = maze.goal,
         ctx = canvas.context2D,
         width = canvas.width,
