@@ -105,7 +105,7 @@ class Tile {
       other is Tile && x == other.x && y == other.y;
 }
 
-double hueristic(Tile tile, Tile goal) {
+double heuristic(Tile tile, Tile goal) {
   final x = tile.x - goal.x;
   final y = tile.y - goal.y;
   return math.sqrt(x * x + y * y);
@@ -197,7 +197,7 @@ Queue<Tile> aStar2D(Maze maze) {
               .._g = currentTile._g +
                   math.sqrt(math.pow(tile.x - currentTile.x, 2) +
                       math.pow(tile.y - currentTile.y, 2))
-              .._h = hueristic(tile, goal)
+              .._h = heuristic(tile, goal)
               .._f = tile._g + tile._h;
 
             open.add(tile);
