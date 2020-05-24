@@ -46,7 +46,7 @@ class Maze {
 
   factory Maze.parse(String map) {
     List<List<Tile>> tiles = <List<Tile>>[];
-    List rows = map.trim().split('\n');
+    final rows = map.trim().split('\n');
     Tile start;
     Tile goal;
 

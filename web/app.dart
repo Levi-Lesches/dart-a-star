@@ -88,7 +88,7 @@ class CanvasMap {
       ..stroke();
   }
 
-  coords(Tile tile) {
+  List<num> coords(Tile tile) {
     num x = (tile.x + 1) * tileWidth - (tileWidth / 2);
     num y = (tile.y + 1) * tileHeight - (tileHeight / 2);
     return [x, y];
@@ -108,7 +108,7 @@ class CanvasMap {
   }
 
   drawSolution(Queue<Tile> solution) {
-    var start;
+    Tile start;
     solution.forEach((Tile tile) {
       if (start == null) {
         start = tile;
