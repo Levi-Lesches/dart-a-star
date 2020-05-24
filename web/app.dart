@@ -119,8 +119,8 @@ class CanvasMap {
 void generateMapAndSolve(CanvasElement canvas) {
   canvas.context2D.clearRect(0, 0, canvas.width, canvas.height);
 
-  Maze maze = new Maze.random(width: 10, height: 10);
-  CanvasMap canvasMap = new CanvasMap(canvas, maze);
+  Maze maze = Maze.random(width: 10, height: 10);
+  CanvasMap canvasMap = CanvasMap(canvas, maze);
   canvasMap.drawMap();
 
   Queue<Tile> solution = aStar2D(maze);

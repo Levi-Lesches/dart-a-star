@@ -25,7 +25,7 @@ class GeneralizedTile extends Tile with Node {
 }
 
 class GeneralizedMaze implements Graph<GeneralizedTile> {
-  List<List<GeneralizedTile>> tiles = new List();
+  List<List<GeneralizedTile>> tiles = List();
   GeneralizedTile start;
   GeneralizedTile goal;
 
@@ -33,17 +33,17 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   int numRows;
 
   GeneralizedMaze(String map) {
-    var maze = new Maze.parse(map); // Lazy. Outsource parsing to the original.
+    var maze = Maze.parse(map); // Lazy. Outsource parsing to the original.
 
     numRows = maze.tiles.length;
     numColumns = maze.tiles[0].length;
 
     for (int i = 0; i < numRows; i++) {
-      var row = new List<GeneralizedTile>();
+      var row = List<GeneralizedTile>();
       tiles.add(row);
       for (int j = 0; j < numColumns; j++) {
         var orig = maze.tiles[i][j];
-        row.add(new GeneralizedTile(orig.x, orig.y, orig.obstacle));
+        row.add(GeneralizedTile(orig.x, orig.y, orig.obstacle));
       }
     }
 
@@ -67,7 +67,7 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   }
 
   Iterable<GeneralizedTile> getNeighboursOf(GeneralizedTile currentTile) {
-    Queue<GeneralizedTile> result = new Queue<GeneralizedTile>();
+    Queue<GeneralizedTile> result = Queue<GeneralizedTile>();
     for (int newX = Math.max(0, currentTile.x - 1);
         newX <= Math.min(numColumns - 1, currentTile.x + 1);
         newX++) {
@@ -81,11 +81,9 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   }
 }
 
-/**
- * This is here to compare the new, generalized A* approach to the older,
- * 2D-only code. The goal is to attain similar performance even with the
- * more flexible design.
- */
+/// This is here to compare the new, generalized A* approach to the older,
+/// 2D-only code. The goal is to attain similar performance even with the
+/// more flexible design.
 class AStar2DGeneralizedBenchmark extends BenchmarkBase {
   static const String textMap = """
       soooooooxoxo
@@ -112,8 +110,8 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
 
   // Not measured setup code executed prior to the benchmark runs.
   void setup() {
-    maze = new GeneralizedMaze(textMap);
-    aStar = new AStar(maze);
+    maze = GeneralizedMaze(textMap);
+    aStar = AStar(maze);
   }
 
   // Not measures teardown code executed after the benchark runs.
@@ -123,5 +121,5 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
 }
 
 main() {
-  new AStar2DGeneralizedBenchmark().report();
+  AStar2DGeneralizedBenchmark().report();
 }

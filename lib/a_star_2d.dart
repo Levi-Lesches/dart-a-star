@@ -26,21 +26,21 @@ class Maze {
   Maze(this.tiles, this.start, this.goal);
 
   factory Maze.random({int width, int height}) {
-    if (width == null) throw new ArgumentError('width must not be null');
-    if (height == null) throw new ArgumentError('height must not be null');
+    if (width == null) throw ArgumentError('width must not be null');
+    if (height == null) throw ArgumentError('height must not be null');
 
-    Math.Random rand = new Math.Random();
-    List<List<Tile>> tiles = new List<List<Tile>>();
+    Math.Random rand = Math.Random();
+    List<List<Tile>> tiles = List<List<Tile>>();
 
     for (int y = 0; y < height; y++) {
-      List<Tile> row = new List<Tile>();
+      List<Tile> row = List<Tile>();
       for (int x = 0; x < width; x++) {
-        row.add(new Tile(x, y, rand.nextBool()));
+        row.add(Tile(x, y, rand.nextBool()));
       }
       tiles.add(row);
     }
 
-    return new Maze(tiles, tiles[0][0], tiles[height - 1][width - 1]);
+    return Maze(tiles, tiles[0][0], tiles[height - 1][width - 1]);
   }
 
   factory Maze.parse(String map) {
@@ -50,13 +50,13 @@ class Maze {
     Tile goal;
 
     for (var rowNum = 0; rowNum < rows.length; rowNum++) {
-      var row = new List<Tile>();
+      var row = List<Tile>();
       var lineTiles = rows[rowNum].trim().split("");
 
       for (var colNum = 0; colNum < lineTiles.length; colNum++) {
         var t = lineTiles[colNum];
         bool obstacle = (t == 'x');
-        var tile = new Tile(colNum, rowNum, obstacle);
+        var tile = Tile(colNum, rowNum, obstacle);
         if (t == 's') start = tile;
         if (t == 'g') goal = tile;
         row.add(tile);
@@ -65,7 +65,7 @@ class Maze {
       tiles.add(row);
     }
 
-    return new Maze(tiles, start, goal);
+    return Maze(tiles, start, goal);
   }
 }
 
@@ -105,10 +105,8 @@ double hueristic(Tile tile, Tile goal) {
 // thanks to http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html
 // for the original algorithm
 
-/**
- * This algorithm works only for 2D grids. There is a lot of room to optimize
- * this further.
- */
+/// This algorithm works only for 2D grids. There is a lot of room to optimize
+/// this further.
 Queue<Tile> aStar2D(Maze maze) {
   List<List<Tile>> map = maze.tiles;
   Tile start = maze.start;
@@ -136,7 +134,7 @@ Queue<Tile> aStar2D(Maze maze) {
 
     if (currentTile == goal) {
       // queues are more performant when adding to the front
-      Queue<Tile> path = new Queue<Tile>.from([goal]);
+      Queue<Tile> path = Queue<Tile>.from([goal]);
 
       // Go up the chain to recreate the path
       while (currentTile._parentIndex != -1) {
@@ -200,5 +198,5 @@ Queue<Tile> aStar2D(Maze maze) {
     }
   }
 
-  return new Queue<Tile>();
+  return Queue<Tile>();
 }
