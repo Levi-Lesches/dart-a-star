@@ -33,9 +33,9 @@ class Maze {
     final rand = Math.Random();
     final tiles = List<List<Tile>>();
 
-    for (int y = 0; y < height; y++) {
+    for (var y = 0; y < height; y++) {
       final row = List<Tile>();
-      for (int x = 0; x < width; x++) {
+      for (var x = 0; x < width; x++) {
         row.add(Tile(x, y, rand.nextBool()));
       }
       tiles.add(row);
@@ -125,17 +125,17 @@ Queue<Tile> aStar2D(Maze maze) {
   open.add(start);
 
   while (open.length > 0) {
-    double bestCost = open[0]._f;
-    int bestTileIndex = 0;
+    var bestCost = open[0]._f;
+    var bestTileIndex = 0;
 
-    for (int i = 1; i < open.length; i++) {
+    for (var i = 1; i < open.length; i++) {
       if (open[i]._f < bestCost) {
         bestCost = open[i]._f;
         bestTileIndex = i;
       }
     }
 
-    Tile currentTile = open[bestTileIndex];
+    var currentTile = open[bestTileIndex];
 
     if (currentTile == goal) {
       // queues are more performant when adding to the front
@@ -154,10 +154,10 @@ Queue<Tile> aStar2D(Maze maze) {
 
     closed.add(currentTile);
 
-    for (int newX = Math.max(0, currentTile.x - 1);
+    for (var newX = Math.max(0, currentTile.x - 1);
         newX <= Math.min(numColumns - 1, currentTile.x + 1);
         newX++) {
-      for (int newY = Math.max(0, currentTile.y - 1);
+      for (var newY = Math.max(0, currentTile.y - 1);
           newY <= Math.min(numRows - 1, currentTile.y + 1);
           newY++) {
         if (!map[newY][newX].obstacle // If the new node is open
@@ -165,8 +165,8 @@ Queue<Tile> aStar2D(Maze maze) {
             (goal.x == newX && goal.y == newY)) {
           // or the new node is our destination
           //See if the node is already in our closed list. If so, skip it.
-          bool foundInClosed = false;
-          for (int i = 0; i < closed.length; i++) {
+          var foundInClosed = false;
+          for (var i = 0; i < closed.length; i++) {
             if (closed[i].x == newX && closed[i].y == newY) {
               foundInClosed = true;
               break;
@@ -178,8 +178,8 @@ Queue<Tile> aStar2D(Maze maze) {
           }
 
           //See if the node is in our open list. If not, use it.
-          bool foundInOpen = false;
-          for (int i = 0; i < open.length; i++) {
+          var foundInOpen = false;
+          for (var i = 0; i < open.length; i++) {
             if (open[i].x == newX && open[i].y == newY) {
               foundInOpen = true;
               break;

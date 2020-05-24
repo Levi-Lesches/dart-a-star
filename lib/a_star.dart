@@ -110,7 +110,7 @@ class AStar<T extends Node<T>> {
   Queue<T> findPathSync(T start, T goal) {
     if (!_zeroed) _zeroNodes();
 
-    final Queue<T> open = Queue<T>();
+    final open = Queue<T>();
     T lastClosed;
 
     open.add(start);
@@ -123,14 +123,14 @@ class AStar<T extends Node<T>> {
 
     while (open.isNotEmpty) {
       // Find node with best (lowest) cost.
-      T currentNode = open.fold(null, (T a, T b) {
+      var currentNode = open.fold(null, (T a, T b) {
         if (a == null) return b;
         return a._f < b._f ? a : b;
       });
 
       if (currentNode == goal) {
         // queues are more performant when adding to the front
-        final Queue<T> path = Queue<T>()..add(goal);
+        final path = Queue<T>()..add(goal);
 
         // Go up the chain to recreate the path
         while (currentNode._parent != null) {
@@ -147,7 +147,7 @@ class AStar<T extends Node<T>> {
       lastClosed = currentNode;
       currentNode._isInClosedSet = true;
 
-      for (final T candidate in graph.getNeighboursOf(currentNode)) {
+      for (final candidate in graph.getNeighboursOf(currentNode)) {
         final distance = graph.getDistance(currentNode, candidate);
         if (distance != null || (candidate == goal)) {
           // If the new node is open or the new node is our destination.

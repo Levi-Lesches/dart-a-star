@@ -38,10 +38,10 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
     numRows = maze.tiles.length;
     numColumns = maze.tiles[0].length;
 
-    for (int i = 0; i < numRows; i++) {
+    for (var i = 0; i < numRows; i++) {
       final row = List<GeneralizedTile>();
       tiles.add(row);
-      for (int j = 0; j < numColumns; j++) {
+      for (var j = 0; j < numColumns; j++) {
         final orig = maze.tiles[i][j];
         row.add(GeneralizedTile(orig.x, orig.y, orig.obstacle));
       }
@@ -65,18 +65,17 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   @override
   num getHeuristicDistance(GeneralizedTile tile, GeneralizedTile goal) {
     final x = tile.x - goal.x;
-    fina;
-    y = tile.y - goal.y;
+    final y = tile.y - goal.y;
     return Math.sqrt(x * x + y * y);
   }
 
   @override
   Iterable<GeneralizedTile> getNeighboursOf(GeneralizedTile currentTile) {
     final result = Queue<GeneralizedTile>();
-    for (int newX = Math.max(0, currentTile.x - 1);
+    for (var newX = Math.max(0, currentTile.x - 1);
         newX <= Math.min(numColumns - 1, currentTile.x + 1);
         newX++) {
-      for (int newY = Math.max(0, currentTile.y - 1);
+      for (var newY = Math.max(0, currentTile.y - 1);
           newY <= Math.min(numRows - 1, currentTile.y + 1);
           newY++) {
         result.add(tiles[newY][newX]);

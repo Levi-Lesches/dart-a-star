@@ -35,10 +35,10 @@ class Simple2DMaze implements Graph<Simple2DNode> {
 
   Simple2DMaze(List<List<num>> costMap) {
     tiles = List<List<Simple2DNode>>(costMap.length);
-    for (int i = 0; i < costMap.length; i++) {
+    for (var i = 0; i < costMap.length; i++) {
       final rawRow = costMap[i];
       tiles[i] = List<Simple2DNode>(rawRow.length);
-      for (int j = 0; j < rawRow.length; j++) {
+      for (var j = 0; j < rawRow.length; j++) {
         final rawTile = rawRow[j];
         tiles[i][j] = Simple2DNode(j, i, rawTile);
         allNodes.add(tiles[i][j]);
