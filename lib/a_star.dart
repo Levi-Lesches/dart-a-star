@@ -47,15 +47,10 @@ abstract class Graph<T extends Node<T>> {
   Iterable<T> getNeighboursOf(T node);
 }
 
-/// Mixin class with which the [Graph]'s nodes should be extended. For example:
-///
-///     class MyMapTile extends Object with Node<MyMapTile> { /* ... */ }
-///
-/// Or, in some cases, your graph nodes will already be extending something
-/// else, so:
+/// Mixin class with which the [Graph]'s nodes should be extended.
 ///
 ///     class MyTraversableTile extends MyTile with Node<MyTraversableTile> { /* ... */ }
-class Node<T extends Node<T>> {
+mixin Node<T extends Node<T>> {
   num _f;
   num _g;
   T _parent;
