@@ -132,7 +132,7 @@ void generateMapAndSolve(CanvasElement canvas) {
 }
 
 main() {
-  CanvasElement canvas = querySelector('#surface');
+  final canvas = querySelector('#surface') as CanvasElement;
   querySelector('#b').onClick.listen((e) => generateMapAndSolve(canvas));
 
 //  var textMap = """
