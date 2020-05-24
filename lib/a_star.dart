@@ -20,7 +20,7 @@ import 'dart:collection';
 import 'dart:async';
 
 /// The A* class works on any class that implements the [Graph] interface.
-abstract class Graph<T extends Node> {
+abstract class Graph<T extends Node<T>> {
   /// Returns an [Iterable] of all the nodes of the [Graph]. This is accessed
   /// only during the setup phase, so it's not critical to optimize this.
   ///
