@@ -62,7 +62,7 @@ mixin Node<T extends Node<T>> {
 class AStar<T extends Node<T>> {
   final Graph<T> graph;
 
-  AStar(Graph<T> this.graph);
+  AStar(this.graph);
 
   // TODO: cacheNeighbours option - tells AStar that the graph is not changing
   // in terms of which nodes are neighbouring which nodes
