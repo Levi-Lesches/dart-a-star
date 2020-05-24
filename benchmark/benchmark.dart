@@ -14,10 +14,10 @@
  limitations under the License.
 */
 
-import 'package:a_star/a_star.dart';
-import 'package:benchmark_harness/benchmark_harness.dart';
 import 'dart:collection';
 import 'dart:math' as Math;
+import 'package:a_star/a_star.dart';
+import 'package:benchmark_harness/benchmark_harness.dart';
 
 class Simple2DNode extends Object with Node<Simple2DNode> {
   int x, y;

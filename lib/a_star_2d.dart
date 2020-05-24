@@ -16,8 +16,8 @@
 
 library a_star_2d;
 
-import 'dart:math' as Math;
 import 'dart:collection';
+import 'dart:math' as Math;
 
 class Maze {
   List<List<Tile>> tiles;

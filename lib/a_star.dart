@@ -16,8 +16,8 @@
 
 library a_star;
 
-import 'dart:collection';
 import 'dart:async';
+import 'dart:collection';
 
 /// The A* class works on any class that implements the [Graph] interface.
 abstract class Graph<T extends Node<T>> {

@@ -14,9 +14,9 @@
    limitations under the License.
  */
 
+import 'dart:collection' show Queue;
 import 'dart:html';
 import 'dart:math' as Math;
-import 'dart:collection' show Queue;
 import 'package:a_star/a_star_2d.dart';
 
 class CanvasMap {
