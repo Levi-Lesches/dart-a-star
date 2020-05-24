@@ -54,34 +54,38 @@ class CanvasMap {
     } else {
       ctx.fillStyle = 'black';
     }
-    ctx.arc(loc[0], loc[1], 5, 0, Math.pi * 2, true);
-    ctx.fill();
+    ctx
+      ..arc(loc[0], loc[1], 5, 0, Math.pi * 2, true)
+      ..fill();
   }
 
   drawStart(Tile start) {
     var loc = coords(start);
-    ctx.beginPath();
-    ctx.strokeStyle = 'blue';
-    ctx.arc(loc[0], loc[1], 15, 0, Math.pi * 2, true);
-    ctx.stroke();
+    ctx
+      ..beginPath()
+      ..strokeStyle = 'blue'
+      ..arc(loc[0], loc[1], 15, 0, Math.pi * 2, true)
+      ..stroke();
   }
 
   drawGoal(Tile start) {
     var loc = coords(start);
-    ctx.beginPath();
-    ctx.strokeStyle = 'green';
-    ctx.arc(loc[0], loc[1], 15, 0, Math.pi * 2, true);
-    ctx.stroke();
+    ctx
+      ..beginPath()
+      ..strokeStyle = 'green'
+      ..arc(loc[0], loc[1], 15, 0, Math.pi * 2, true)
+      ..stroke();
   }
 
   drawLine(Tile start, Tile end) {
     var moveTo = coords(start);
     var lineTo = coords(end);
-    ctx.beginPath();
-    ctx.strokeStyle = 'black';
-    ctx.moveTo(moveTo[0], moveTo[1]);
-    ctx.lineTo(lineTo[0], lineTo[1]);
-    ctx.stroke();
+    ctx
+      ..beginPath()
+      ..strokeStyle = 'black'
+      ..moveTo(moveTo[0], moveTo[1])
+      ..lineTo(lineTo[0], lineTo[1])
+      ..stroke();
   }
 
   coords(Tile tile) {
@@ -120,8 +124,7 @@ void generateMapAndSolve(CanvasElement canvas) {
   canvas.context2D.clearRect(0, 0, canvas.width, canvas.height);
 
   Maze maze = Maze.random(width: 10, height: 10);
-  CanvasMap canvasMap = CanvasMap(canvas, maze);
-  canvasMap.drawMap();
+  CanvasMap canvasMap = CanvasMap(canvas, maze)..drawMap();
 
   Queue<Tile> solution = aStar2D(maze);
 

@@ -23,6 +23,7 @@ class Maze {
   List<List<Tile>> tiles;
   Tile start;
   Tile goal;
+
   Maze(this.tiles, this.start, this.goal);
 
   factory Maze.random({int width, int height}) {
@@ -90,6 +91,7 @@ class Tile {
 
   @override
   String toString() => _str;
+
   @override
   int get hashCode => _hashcode;
 
@@ -185,14 +187,14 @@ Queue<Tile> aStar2D(Maze maze) {
           }
 
           if (!foundInOpen) {
-            Tile tile = map[newY][newX];
-            tile._parentIndex = closed.length - 1;
+            Tile tile = map[newY][newX].._parentIndex = closed.length - 1;
 
-            tile._g = currentTile._g +
-                Math.sqrt(Math.pow(tile.x - currentTile.x, 2) +
-                    Math.pow(tile.y - currentTile.y, 2));
-            tile._h = hueristic(tile, goal);
-            tile._f = tile._g + tile._h;
+            tile
+              .._g = currentTile._g +
+                  Math.sqrt(Math.pow(tile.x - currentTile.x, 2) +
+                      Math.pow(tile.y - currentTile.y, 2))
+              .._h = hueristic(tile, goal)
+              .._f = tile._g + tile._h;
 
             open.add(tile);
           }

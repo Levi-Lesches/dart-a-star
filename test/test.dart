@@ -10,8 +10,8 @@ class SimpleNode extends Object with Node {
 
   num getCostFrom(SimpleNode other) =>
       nodeInherentCost; // This is how it works in many games - the node itself
-  // has a cost. For example, a forrest has 2x the cost
-  // of a plain.
+// has a cost. For example, a forrest has 2x the cost
+// of a plain.
 }
 
 class SimpleNodeNetwork extends Graph<SimpleNode> {
@@ -100,8 +100,7 @@ main() {
     });
 
     test("works asynchronously", () {
-      var pathFuture = aStar.findPath(network.start, network.goal);
-      pathFuture.then(expectAsync1((path) {
+      aStar.findPath(network.start, network.goal).then(expectAsync1((path) {
         expect(path,
             orderedEquals([network.start, network.b, network.c, network.goal]));
       }));

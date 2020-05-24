@@ -67,6 +67,7 @@ class AStar<T extends Node> {
   final Graph<T> graph;
 
   AStar(Graph<T> this.graph);
+
   // TODO: cacheNeighbours option - tells AStar that the graph is not changing
   // in terms of which nodes are neighbouring which nodes
   // TODO: cacheDistances option - tells AStar that the graph is not changing
@@ -78,9 +79,10 @@ class AStar<T extends Node> {
 
   void _zeroNodes() {
     graph.allNodes.forEach((Node node) {
-      node._isInClosedSet = false;
-      node._isInOpenSet = false;
-      node._parent = null;
+      node
+        .._isInClosedSet = false
+        .._isInOpenSet = false
+        .._parent = null;
       // No need to zero out f and g, A* doesn't depend on them being set
       // to 0 (it overrides them on first access to each node).
     });
@@ -111,9 +113,10 @@ class AStar<T extends Node> {
     Node lastClosed;
 
     open.add(start);
-    start._isInOpenSet = true;
-    start._f = -1.0;
-    start._g = -1.0;
+    start
+      .._isInOpenSet = true
+      .._f = -1.0
+      .._g = -1.0;
 
     _zeroed = false;
 
@@ -126,8 +129,7 @@ class AStar<T extends Node> {
 
       if (currentNode == goal) {
         // queues are more performant when adding to the front
-        final Queue<T> path = Queue<T>();
-        path.add(goal);
+        final Queue<T> path = Queue<T>()..add(goal);
 
         // Go up the chain to recreate the path
         while (currentNode._parent != null) {
@@ -153,9 +155,9 @@ class AStar<T extends Node> {
           }
 
           if (!candidate._isInOpenSet) {
-            candidate._parent = lastClosed;
-
-            candidate._g = currentNode._g + distance;
+            candidate
+              .._parent = lastClosed
+              .._g = currentNode._g + distance;
             num h = graph.getHeuristicDistance(candidate, goal);
             candidate._f = candidate._g + h;
 
