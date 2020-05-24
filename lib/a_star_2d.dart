@@ -52,7 +52,7 @@ class Maze {
 
     for (var rowNum = 0; rowNum < rows.length; rowNum++) {
       final row = List<Tile>();
-      final lineTiles = rows[rowNum].trim().split("");
+      final lineTiles = rows[rowNum].trim().split('');
 
       for (var colNum = 0; colNum < lineTiles.length; colNum++) {
         final t = lineTiles[colNum];

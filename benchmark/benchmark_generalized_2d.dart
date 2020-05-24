@@ -90,7 +90,7 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
 /// 2D-only code. The goal is to attain similar performance even with the
 /// more flexible design.
 class AStar2DGeneralizedBenchmark extends BenchmarkBase {
-  static const String textMap = """
+  static const String textMap = '''
       soooooooxoxo
       oxxxxxooxoxo
       oxxoxoooxoxx
@@ -100,7 +100,7 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
       oxxoxxooxoxo
       oxxoxoooxoxx
       oxoooxxxooog
-      """;
+      ''';
 
   AStar2DGeneralizedBenchmark() : super('AStar_Generalized_2D');
 
