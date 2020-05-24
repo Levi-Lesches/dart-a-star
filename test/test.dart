@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'package:a_star/a_star.dart';
 
-class SimpleNode extends Object with Node {
+class SimpleNode extends Object with Node<SimpleNode> {
   num nodeInherentCost;
 
   SimpleNode(this.nodeInherentCost);

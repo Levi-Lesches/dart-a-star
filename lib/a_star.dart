@@ -48,22 +48,22 @@ abstract class Graph<T extends Node> {
 
 /// Mixin class with which the [Graph]'s nodes should be extended. For example:
 ///
-///     class MyMapTile extends Object with Node { /* ... */ }
+///     class MyMapTile extends Object with Node<MyMapTile> { /* ... */ }
 ///
 /// Or, in some cases, your graph nodes will already be extending something
 /// else, so:
 ///
-///     class MyTraversableTile extends MyTile with Node { /* ... */ }
-class Node extends Object {
+///     class MyTraversableTile extends MyTile with Node<MyTraversableTile> { /* ... */ }
+class Node<T extends Node<T>> {
   num _f;
   num _g;
-  Node _parent;
+  T _parent;
   bool _isInOpenSet = false; // Much faster than finding nodes in iterables.
   bool _isInClosedSet = false;
 }
 
 /// The A* Star algorithm itself. Instantiated with a [Graph] (e.g., a map).
-class AStar<T extends Node> {
+class AStar<T extends Node<T>> {
   final Graph<T> graph;
 
   AStar(Graph<T> this.graph);
@@ -110,7 +110,7 @@ class AStar<T extends Node> {
     if (!_zeroed) _zeroNodes();
 
     final Queue<T> open = Queue<T>();
-    Node lastClosed;
+    T lastClosed;
 
     open.add(start);
     start

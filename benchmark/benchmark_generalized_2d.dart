@@ -20,7 +20,7 @@ import 'package:benchmark_harness/benchmark_harness.dart';
 import 'dart:collection';
 import 'dart:math' as Math;
 
-class GeneralizedTile extends Tile with Node {
+class GeneralizedTile extends Tile with Node<GeneralizedTile> {
   GeneralizedTile(int x, int y, bool obstacle) : super(x, y, obstacle);
 }
 

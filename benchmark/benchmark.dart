@@ -19,7 +19,7 @@ import 'package:benchmark_harness/benchmark_harness.dart';
 import 'dart:collection';
 import 'dart:math' as Math;
 
-class Simple2DNode extends Object with Node {
+class Simple2DNode extends Object with Node<Simple2DNode> {
   int x, y;
   num nodeInherentCost;
   Set<Simple2DNode> connectedNodes = Set<Simple2DNode>();
