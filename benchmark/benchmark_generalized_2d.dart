@@ -25,7 +25,7 @@ class GeneralizedTile extends Tile with Node<GeneralizedTile> {
 }
 
 class GeneralizedMaze implements Graph<GeneralizedTile> {
-  List<List<GeneralizedTile>> tiles = List();
+  List<List<GeneralizedTile>> tiles = [];
   GeneralizedTile start;
   GeneralizedTile goal;
 
@@ -39,7 +39,7 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
     numColumns = maze.tiles[0].length;
 
     for (var i = 0; i < numRows; i++) {
-      final row = List<GeneralizedTile>();
+      final row = <GeneralizedTile>[];
       tiles.add(row);
       for (var j = 0; j < numColumns; j++) {
         final orig = maze.tiles[i][j];

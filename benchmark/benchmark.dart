@@ -22,7 +22,7 @@ import 'package:benchmark_harness/benchmark_harness.dart';
 class Simple2DNode extends Object with Node<Simple2DNode> {
   int x, y;
   num nodeInherentCost;
-  Set<Simple2DNode> connectedNodes = Set<Simple2DNode>();
+  Set<Simple2DNode> connectedNodes = <Simple2DNode>{};
 
   Simple2DNode(this.x, this.y, this.nodeInherentCost);
 
@@ -73,7 +73,7 @@ class Simple2DMaze implements Graph<Simple2DNode> {
   Simple2DNode getNode(int x, int y) => tiles[x][y];
 
   @override
-  List<Simple2DNode> allNodes = List();
+  List<Simple2DNode> allNodes = [];
 
   @override
   num getDistance(Simple2DNode a, Simple2DNode b) {

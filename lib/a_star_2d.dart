@@ -35,10 +35,10 @@ class Maze {
     }
 
     final rand = Math.Random();
-    final tiles = List<List<Tile>>();
+    final tiles = <List<Tile>>[];
 
     for (var y = 0; y < height; y++) {
-      final row = List<Tile>();
+      final row = <Tile>[];
       for (var x = 0; x < width; x++) {
         row.add(Tile(x, y, rand.nextBool()));
       }
@@ -55,7 +55,7 @@ class Maze {
     Tile goal;
 
     for (var rowNum = 0; rowNum < rows.length; rowNum++) {
-      final row = List<Tile>();
+      final row = <Tile>[];
       final lineTiles = rows[rowNum].trim().split('');
 
       for (var colNum = 0; colNum < lineTiles.length; colNum++) {
