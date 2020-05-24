@@ -148,7 +148,7 @@ class AStar<T extends Node<T>> {
       currentNode._isInClosedSet = true;
 
       for (final T candidate in graph.getNeighboursOf(currentNode)) {
-        num distance = graph.getDistance(currentNode, candidate);
+        final distance = graph.getDistance(currentNode, candidate);
         if (distance != null || (candidate == goal)) {
           // If the new node is open or the new node is our destination.
           if (candidate._isInClosedSet) {
@@ -159,7 +159,7 @@ class AStar<T extends Node<T>> {
             candidate
               .._parent = lastClosed
               .._g = currentNode._g + distance;
-            num h = graph.getHeuristicDistance(candidate, goal);
+            final h = graph.getHeuristicDistance(candidate, goal);
             candidate._f = candidate._g + h;
 
             open.add(candidate);

@@ -79,7 +79,7 @@ main() {
     });
 
     test('finds fastest way', () {
-      var path = aStar.findPathSync(network.start, network.goal);
+      final path = aStar.findPathSync(network.start, network.goal);
       expect(path,
           orderedEquals([network.start, network.b, network.c, network.goal]));
     });
@@ -87,15 +87,15 @@ main() {
     test("doesn't find if blocked by impassable", () {
       network.c.nodeInherentCost = null;
       network.d.nodeInherentCost = null;
-      var path = aStar.findPathSync(network.start, network.goal);
+      final path = aStar.findPathSync(network.start, network.goal);
       expect(path, isEmpty);
     });
 
     test('works for successive path finding on the same AStar instance', () {
-      var path = aStar.findPathSync(network.start, network.goal);
+      final path = aStar.findPathSync(network.start, network.goal);
       expect(path,
           orderedEquals([network.start, network.b, network.c, network.goal]));
-      var path2 = aStar.findPathSync(network.a, network.goal);
+      final path2 = aStar.findPathSync(network.a, network.goal);
       expect(path2, orderedEquals([network.a, network.c, network.goal]));
     });
 

@@ -30,11 +30,11 @@ class Maze {
     if (width == null) throw ArgumentError('width must not be null');
     if (height == null) throw ArgumentError('height must not be null');
 
-    Math.Random rand = Math.Random();
-    List<List<Tile>> tiles = List<List<Tile>>();
+    final rand = Math.Random();
+    final tiles = List<List<Tile>>();
 
     for (int y = 0; y < height; y++) {
-      List<Tile> row = List<Tile>();
+      final row = List<Tile>();
       for (int x = 0; x < width; x++) {
         row.add(Tile(x, y, rand.nextBool()));
       }
@@ -45,19 +45,19 @@ class Maze {
   }
 
   factory Maze.parse(String map) {
-    List<List<Tile>> tiles = <List<Tile>>[];
+    final tiles = <List<Tile>>[];
     final rows = map.trim().split('\n');
     Tile start;
     Tile goal;
 
     for (var rowNum = 0; rowNum < rows.length; rowNum++) {
-      var row = List<Tile>();
-      var lineTiles = rows[rowNum].trim().split("");
+      final row = List<Tile>();
+      final lineTiles = rows[rowNum].trim().split("");
 
       for (var colNum = 0; colNum < lineTiles.length; colNum++) {
-        var t = lineTiles[colNum];
-        bool obstacle = (t == 'x');
-        var tile = Tile(colNum, rowNum, obstacle);
+        final t = lineTiles[colNum];
+        final obstacle = (t == 'x');
+        final tile = Tile(colNum, rowNum, obstacle);
         if (t == 's') start = tile;
         if (t == 'g') goal = tile;
         row.add(tile);
@@ -102,8 +102,8 @@ class Tile {
 }
 
 double hueristic(Tile tile, Tile goal) {
-  int x = tile.x - goal.x;
-  int y = tile.y - goal.y;
+  final x = tile.x - goal.x;
+  final y = tile.y - goal.y;
   return Math.sqrt(x * x + y * y);
 }
 
@@ -113,14 +113,14 @@ double hueristic(Tile tile, Tile goal) {
 /// This algorithm works only for 2D grids. There is a lot of room to optimize
 /// this further.
 Queue<Tile> aStar2D(Maze maze) {
-  List<List<Tile>> map = maze.tiles;
-  Tile start = maze.start;
-  Tile goal = maze.goal;
-  int numRows = map.length;
-  int numColumns = map[0].length;
+  final map = maze.tiles;
+  final start = maze.start;
+  final goal = maze.goal;
+  final numRows = map.length;
+  final numColumns = map[0].length;
 
-  List<Tile> open = <Tile>[];
-  List<Tile> closed = <Tile>[];
+  final open = <Tile>[];
+  final closed = <Tile>[];
 
   open.add(start);
 
@@ -139,7 +139,7 @@ Queue<Tile> aStar2D(Maze maze) {
 
     if (currentTile == goal) {
       // queues are more performant when adding to the front
-      Queue<Tile> path = Queue<Tile>.from([goal]);
+      final path = Queue<Tile>.from([goal]);
 
       // Go up the chain to recreate the path
       while (currentTile._parentIndex != -1) {
@@ -187,7 +187,7 @@ Queue<Tile> aStar2D(Maze maze) {
           }
 
           if (!foundInOpen) {
-            Tile tile = map[newY][newX].._parentIndex = closed.length - 1;
+            final tile = map[newY][newX].._parentIndex = closed.length - 1;
 
             tile
               .._g = currentTile._g +

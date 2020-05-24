@@ -36,10 +36,10 @@ class Simple2DMaze implements Graph<Simple2DNode> {
   Simple2DMaze(List<List<num>> costMap) {
     tiles = List<List<Simple2DNode>>(costMap.length);
     for (int i = 0; i < costMap.length; i++) {
-      var rawRow = costMap[i];
+      final rawRow = costMap[i];
       tiles[i] = List<Simple2DNode>(rawRow.length);
       for (int j = 0; j < rawRow.length; j++) {
-        var rawTile = rawRow[j];
+        final rawTile = rawRow[j];
         tiles[i][j] = Simple2DNode(j, i, rawTile);
         allNodes.add(tiles[i][j]);
       }
@@ -49,9 +49,9 @@ class Simple2DMaze implements Graph<Simple2DNode> {
 
   void _generateConnectedNodes() {
     for (var rowNum = 0; rowNum < tiles.length; rowNum++) {
-      var row = tiles[rowNum];
+      final row = tiles[rowNum];
       for (var colNum = 0; colNum < row.length; colNum++) {
-        var tile = row[colNum];
+        final tile = row[colNum];
         for (var i = rowNum - 1; i <= rowNum + 1; i++) {
           if (i < 0 || i >= tiles.length) {
             continue; // Outside Maze bounds.

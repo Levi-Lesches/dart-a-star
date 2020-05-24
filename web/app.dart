@@ -47,7 +47,7 @@ class CanvasMap {
         tileHeight = canvas.height / maze.tiles[0].length;
 
   drawTile(Tile tile) {
-    var loc = coords(tile);
+    final loc = coords(tile);
     ctx.beginPath();
     if (tile.obstacle) {
       ctx.fillStyle = 'red';
@@ -60,7 +60,7 @@ class CanvasMap {
   }
 
   drawStart(Tile start) {
-    var loc = coords(start);
+    final loc = coords(start);
     ctx
       ..beginPath()
       ..strokeStyle = 'blue'
@@ -69,7 +69,7 @@ class CanvasMap {
   }
 
   drawGoal(Tile start) {
-    var loc = coords(start);
+    final loc = coords(start);
     ctx
       ..beginPath()
       ..strokeStyle = 'green'
@@ -78,8 +78,8 @@ class CanvasMap {
   }
 
   drawLine(Tile start, Tile end) {
-    var moveTo = coords(start);
-    var lineTo = coords(end);
+    final moveTo = coords(start);
+    final lineTo = coords(end);
     ctx
       ..beginPath()
       ..strokeStyle = 'black'
@@ -89,16 +89,16 @@ class CanvasMap {
   }
 
   List<num> coords(Tile tile) {
-    num x = (tile.x + 1) * tileWidth - (tileWidth / 2);
-    num y = (tile.y + 1) * tileHeight - (tileHeight / 2);
+    final x = (tile.x + 1) * tileWidth - (tileWidth / 2);
+    final y = (tile.y + 1) * tileHeight - (tileHeight / 2);
     return [x, y];
   }
 
   drawMap() {
     for (var y = 0; y < maze.tiles.length; y++) {
-      List<Tile> row = maze.tiles[y];
+      final row = maze.tiles[y];
       for (var x = 0; x < row.length; x++) {
-        Tile tile = row[x];
+        final tile = row[x];
         drawTile(tile);
       }
     }
@@ -123,10 +123,10 @@ class CanvasMap {
 void generateMapAndSolve(CanvasElement canvas) {
   canvas.context2D.clearRect(0, 0, canvas.width, canvas.height);
 
-  Maze maze = Maze.random(width: 10, height: 10);
-  CanvasMap canvasMap = CanvasMap(canvas, maze)..drawMap();
+  final maze = Maze.random(width: 10, height: 10);
+  final canvasMap = CanvasMap(canvas, maze)..drawMap();
 
-  Queue<Tile> solution = aStar2D(maze);
+  final solution = aStar2D(maze);
 
   canvasMap.drawSolution(solution);
 }
