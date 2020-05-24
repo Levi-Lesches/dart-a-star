@@ -101,7 +101,7 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
       oxoooxxxooog
       """;
 
-  AStar2DGeneralizedBenchmark() : super("AStar_Generalized_2D");
+  AStar2DGeneralizedBenchmark() : super('AStar_Generalized_2D');
 
   // The benchmark code.
   @override

@@ -18,7 +18,7 @@ import 'package:a_star/a_star_2d.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 class AStar2DBenchmark extends BenchmarkBase {
-  static const String textMap = """
+  static const String textMap = '''
       soooooooxoxo
       oxxxxxooxoxo
       oxxoxoooxoxx
@@ -28,11 +28,11 @@ class AStar2DBenchmark extends BenchmarkBase {
       oxxoxxooxoxo
       oxxoxoooxoxx
       oxoooxxxooog
-      """;
+      ''';
 
   Maze maze;
 
-  AStar2DBenchmark() : super("AStar2D");
+  AStar2DBenchmark() : super('AStar2D');
 
   // The benchmark code.
   @override

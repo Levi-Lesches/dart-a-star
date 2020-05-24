@@ -27,7 +27,7 @@ class Simple2DNode extends Object with Node<Simple2DNode> {
   Simple2DNode(this.x, this.y, this.nodeInherentCost);
 
   @override
-  toString() => "[$x,$y]";
+  toString() => '[$x,$y]';
 }
 
 class Simple2DMaze implements Graph<Simple2DNode> {
@@ -103,7 +103,7 @@ class AStarBenchmark extends BenchmarkBase {
     [1, 1, 1, 2, 1, 1, 10, 1]
   ];
 
-  AStarBenchmark() : super("AStar");
+  AStarBenchmark() : super('AStar');
 
   // The benchmark code.
   @override

@@ -69,7 +69,7 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
 }
 
 main() {
-  group("A* star generic", () {
+  group('A* star generic', () {
     SimpleNodeNetwork network;
     AStar<SimpleNode> aStar;
 
@@ -78,7 +78,7 @@ main() {
       aStar = AStar<SimpleNode>(network);
     });
 
-    test("finds fastest way", () {
+    test('finds fastest way', () {
       var path = aStar.findPathSync(network.start, network.goal);
       expect(path,
           orderedEquals([network.start, network.b, network.c, network.goal]));
@@ -91,7 +91,7 @@ main() {
       expect(path, isEmpty);
     });
 
-    test("works for successive path finding on the same AStar instance", () {
+    test('works for successive path finding on the same AStar instance', () {
       var path = aStar.findPathSync(network.start, network.goal);
       expect(path,
           orderedEquals([network.start, network.b, network.c, network.goal]));
@@ -99,7 +99,7 @@ main() {
       expect(path2, orderedEquals([network.a, network.c, network.goal]));
     });
 
-    test("works asynchronously", () {
+    test('works asynchronously', () {
       aStar.findPath(network.start, network.goal).then(expectAsync1((path) {
         expect(path,
             orderedEquals([network.start, network.b, network.c, network.goal]));

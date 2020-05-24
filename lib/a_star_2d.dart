@@ -86,7 +86,7 @@ class Tile {
       : x = x,
         y = y,
         obstacle = obstacle,
-        _hashcode = "$x,$y".hashCode,
+        _hashcode = '$x,$y'.hashCode,
         _str = '[X:$x, Y:$y, Obs:$obstacle]';
 
   @override
