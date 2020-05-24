@@ -16,7 +16,7 @@
 
 import 'dart:collection' show Queue;
 import 'dart:html';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 import 'package:a_star/a_star_2d.dart';
 
 class CanvasMap {
@@ -53,7 +53,7 @@ class CanvasMap {
       ctx.fillStyle = 'black';
     }
     ctx
-      ..arc(loc[0], loc[1], 5, 0, Math.pi * 2, true)
+      ..arc(loc[0], loc[1], 5, 0, math.pi * 2, true)
       ..fill();
   }
 
@@ -62,7 +62,7 @@ class CanvasMap {
     ctx
       ..beginPath()
       ..strokeStyle = 'blue'
-      ..arc(loc[0], loc[1], 15, 0, Math.pi * 2, true)
+      ..arc(loc[0], loc[1], 15, 0, math.pi * 2, true)
       ..stroke();
   }
 
@@ -71,7 +71,7 @@ class CanvasMap {
     ctx
       ..beginPath()
       ..strokeStyle = 'green'
-      ..arc(loc[0], loc[1], 15, 0, Math.pi * 2, true)
+      ..arc(loc[0], loc[1], 15, 0, math.pi * 2, true)
       ..stroke();
   }
 

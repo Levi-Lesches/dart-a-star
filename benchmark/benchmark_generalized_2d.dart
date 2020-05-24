@@ -15,7 +15,7 @@
 */
 
 import 'dart:collection';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 import 'package:a_star/a_star.dart';
 import 'package:a_star/a_star_2d.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
@@ -61,24 +61,24 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
     if (b.obstacle) {
       return null;
     }
-    return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+    return math.sqrt(math.pow(b.x - a.x, 2) + math.pow(b.y - a.y, 2));
   }
 
   @override
   num getHeuristicDistance(GeneralizedTile tile, GeneralizedTile goal) {
     final x = tile.x - goal.x;
     final y = tile.y - goal.y;
-    return Math.sqrt(x * x + y * y);
+    return math.sqrt(x * x + y * y);
   }
 
   @override
   Iterable<GeneralizedTile> getNeighboursOf(GeneralizedTile currentTile) {
     final result = Queue<GeneralizedTile>();
-    for (var newX = Math.max(0, currentTile.x - 1);
-        newX <= Math.min(numColumns - 1, currentTile.x + 1);
+    for (var newX = math.max(0, currentTile.x - 1);
+        newX <= math.min(numColumns - 1, currentTile.x + 1);
         newX++) {
-      for (var newY = Math.max(0, currentTile.y - 1);
-          newY <= Math.min(numRows - 1, currentTile.y + 1);
+      for (var newY = math.max(0, currentTile.y - 1);
+          newY <= math.min(numRows - 1, currentTile.y + 1);
           newY++) {
         result.add(tiles[newY][newX]);
       }

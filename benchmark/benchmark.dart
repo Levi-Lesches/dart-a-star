@@ -15,7 +15,7 @@
 */
 
 import 'dart:collection';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 import 'package:a_star/a_star.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
@@ -82,7 +82,7 @@ class Simple2DMaze implements Graph<Simple2DNode> {
 
   @override
   num getHeuristicDistance(Simple2DNode a, Simple2DNode b) {
-    return Math.sqrt(Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2));
+    return math.sqrt(math.pow((a.x - b.x), 2) + math.pow((a.y - b.y), 2));
   }
 
   @override

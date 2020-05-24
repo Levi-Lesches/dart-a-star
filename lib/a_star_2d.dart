@@ -17,7 +17,7 @@
 library a_star_2d;
 
 import 'dart:collection';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 class Maze {
   List<List<Tile>> tiles;
@@ -34,7 +34,7 @@ class Maze {
       throw ArgumentError('height must not be null');
     }
 
-    final rand = Math.Random();
+    final rand = math.Random();
     final tiles = <List<Tile>>[];
 
     for (var y = 0; y < height; y++) {
@@ -109,7 +109,7 @@ class Tile {
 double hueristic(Tile tile, Tile goal) {
   final x = tile.x - goal.x;
   final y = tile.y - goal.y;
-  return Math.sqrt(x * x + y * y);
+  return math.sqrt(x * x + y * y);
 }
 
 // thanks to http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html
@@ -159,11 +159,11 @@ Queue<Tile> aStar2D(Maze maze) {
 
     closed.add(currentTile);
 
-    for (var newX = Math.max(0, currentTile.x - 1);
-        newX <= Math.min(numColumns - 1, currentTile.x + 1);
+    for (var newX = math.max(0, currentTile.x - 1);
+        newX <= math.min(numColumns - 1, currentTile.x + 1);
         newX++) {
-      for (var newY = Math.max(0, currentTile.y - 1);
-          newY <= Math.min(numRows - 1, currentTile.y + 1);
+      for (var newY = math.max(0, currentTile.y - 1);
+          newY <= math.min(numRows - 1, currentTile.y + 1);
           newY++) {
         if (!map[newY][newX].obstacle // If the new node is open
             ||
@@ -196,8 +196,8 @@ Queue<Tile> aStar2D(Maze maze) {
 
             tile
               .._g = currentTile._g +
-                  Math.sqrt(Math.pow(tile.x - currentTile.x, 2) +
-                      Math.pow(tile.y - currentTile.y, 2))
+                  math.sqrt(math.pow(tile.x - currentTile.x, 2) +
+                      math.pow(tile.y - currentTile.y, 2))
               .._h = hueristic(tile, goal)
               .._f = tile._g + tile._h;
 
