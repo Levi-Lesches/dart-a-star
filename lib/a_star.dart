@@ -29,8 +29,9 @@ abstract class Graph<T extends Node<T>> {
   ///     get allNodes => tiles.expand((row) => row);
   Iterable<T> get allNodes;
 
-  /// Given two adjancent Nodes, returns the cost (distance) from [a] to [b] (the
-  /// direction can matter). Returns [:null:] if [b] is not reachable from [a].
+  /// Given two adjancent Nodes, returns the cost (distance) from [a] to [b]
+  /// (the direction can matter). Returns [:null:] if [b] is not reachable from
+  /// [a].
   num getDistance(T a, T b);
 
   /// Given two nodes (not necessarily adjancent), returns an estimate of the
