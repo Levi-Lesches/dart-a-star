@@ -101,9 +101,7 @@ class Tile {
   int get hashCode => _hashcode;
 
   @override
-  bool operator ==(dynamic tile) {
-    return tile is Tile && x == tile.x && y == tile.y;
-  }
+  bool operator ==(dynamic tile) => tile is Tile && x == tile.x && y == tile.y;
 }
 
 double hueristic(Tile tile, Tile goal) {

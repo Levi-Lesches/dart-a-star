@@ -97,9 +97,8 @@ class AStar<T extends Node<T>> {
   ///
   /// TODO: Optional weighing for suboptimal, but faster path finding.
   /// http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
-  Future<Queue<T>> findPath(T start, T goal) {
-    return Future<Queue<T>>(() => findPathSync(start, goal));
-  }
+  Future<Queue<T>> findPath(T start, T goal) =>
+      Future<Queue<T>>(() => findPathSync(start, goal));
 
   /// Perform A* search from [start] to [goal].
   ///

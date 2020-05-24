@@ -49,9 +49,7 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
   }
 
   @override
-  num getDistance(SimpleNode a, SimpleNode b) {
-    return b.nodeInherentCost;
-  }
+  num getDistance(SimpleNode a, SimpleNode b) => b.nodeInherentCost;
 
   @override
   num getHeuristicDistance(SimpleNode node, SimpleNode goalNode) {
@@ -69,9 +67,7 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
   }
 
   @override
-  Iterable<SimpleNode> getNeighboursOf(SimpleNode node) {
-    return node.connectedNodes;
-  }
+  Iterable<SimpleNode> getNeighboursOf(SimpleNode node) => node.connectedNodes;
 }
 
 main() {

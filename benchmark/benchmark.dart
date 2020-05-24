@@ -76,19 +76,15 @@ class Simple2DMaze implements Graph<Simple2DNode> {
   List<Simple2DNode> allNodes = [];
 
   @override
-  num getDistance(Simple2DNode a, Simple2DNode b) {
-    return b.nodeInherentCost;
-  }
+  num getDistance(Simple2DNode a, Simple2DNode b) => b.nodeInherentCost;
 
   @override
-  num getHeuristicDistance(Simple2DNode a, Simple2DNode b) {
-    return math.sqrt(math.pow((a.x - b.x), 2) + math.pow((a.y - b.y), 2));
-  }
+  num getHeuristicDistance(Simple2DNode a, Simple2DNode b) =>
+      math.sqrt(math.pow((a.x - b.x), 2) + math.pow((a.y - b.y), 2));
 
   @override
-  Iterable<Simple2DNode> getNeighboursOf(Simple2DNode node) {
-    return node.connectedNodes;
-  }
+  Iterable<Simple2DNode> getNeighboursOf(Simple2DNode node) =>
+      node.connectedNodes;
 }
 
 class AStarBenchmark extends BenchmarkBase {

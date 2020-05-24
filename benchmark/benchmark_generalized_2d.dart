@@ -53,9 +53,7 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   }
 
   @override
-  Iterable<GeneralizedTile> get allNodes {
-    return tiles.expand((row) => row);
-  }
+  Iterable<GeneralizedTile> get allNodes => tiles.expand((row) => row);
 
   @override
   num getDistance(GeneralizedTile a, GeneralizedTile b) {
