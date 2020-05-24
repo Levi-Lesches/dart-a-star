@@ -125,7 +125,7 @@ class AStar<T extends Node<T>> {
 
     while (open.isNotEmpty) {
       // Find node with best (lowest) cost.
-      var currentNode = open.fold(null, (T a, T b) {
+      var currentNode = open.fold<T>(null, (a, b) {
         if (a == null) {
           return b;
         }
