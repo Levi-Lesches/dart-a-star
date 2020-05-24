@@ -85,9 +85,9 @@ class Tile {
   final String _str;
 
   // for A*
-  double _f = -1.0; // heuristic + cost
-  double _g = -1.0; // cost
-  double _h = -1.0; // heuristic estimate
+  double _f = -1; // heuristic + cost
+  double _g = -1; // cost
+  double _h = -1; // heuristic estimate
   int _parentIndex = -1;
 
   Tile(this.x, this.y, {this.obstacle = false})
