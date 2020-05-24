@@ -80,7 +80,7 @@ class Simple2DMaze implements Graph<Simple2DNode> {
 
   @override
   num getHeuristicDistance(Simple2DNode a, Simple2DNode b) =>
-      math.sqrt(math.pow((a.x - b.x), 2) + math.pow((a.y - b.y), 2));
+      math.sqrt(math.pow(a.x - b.x, 2) + math.pow(a.y - b.y, 2));
 
   @override
   Iterable<Simple2DNode> getNeighboursOf(Simple2DNode node) =>

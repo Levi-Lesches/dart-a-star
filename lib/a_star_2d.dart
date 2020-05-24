@@ -60,7 +60,7 @@ class Maze {
 
       for (var colNum = 0; colNum < lineTiles.length; colNum++) {
         final t = lineTiles[colNum];
-        final obstacle = (t == 'x');
+        final obstacle = t == 'x';
         final tile = Tile(colNum, rowNum, obstacle: obstacle);
         if (t == 's') {
           start = tile;
