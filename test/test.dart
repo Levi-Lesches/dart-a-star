@@ -15,6 +15,7 @@ class SimpleNode extends Object with Node {
 }
 
 class SimpleNodeNetwork extends Graph<SimpleNode> {
+  @override
   Iterable<SimpleNode> allNodes; // TODO implement this getter
 
   SimpleNode start, a, b, c, d, goal;
@@ -47,10 +48,12 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
     allNodes = [start, a, b, c, d, goal];
   }
 
+  @override
   num getDistance(SimpleNode a, SimpleNode b) {
     return b.nodeInherentCost;
   }
 
+  @override
   num getHeuristicDistance(SimpleNode node, SimpleNode goalNode) {
     assert(goalNode == goal);
     if (node == start) return 3;
@@ -59,6 +62,7 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
     return 0;
   }
 
+  @override
   Iterable<SimpleNode> getNeighboursOf(SimpleNode node) {
     return node.connectedNodes;
   }

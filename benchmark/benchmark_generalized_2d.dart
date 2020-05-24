@@ -51,21 +51,25 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
     goal = tiles[maze.goal.y][maze.goal.x];
   }
 
+  @override
   Iterable<GeneralizedTile> get allNodes {
     return tiles.expand((row) => row);
   }
 
+  @override
   num getDistance(GeneralizedTile a, GeneralizedTile b) {
     if (b.obstacle) return null;
     return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
   }
 
+  @override
   num getHeuristicDistance(GeneralizedTile tile, GeneralizedTile goal) {
     int x = tile.x - goal.x;
     int y = tile.y - goal.y;
     return Math.sqrt(x * x + y * y);
   }
 
+  @override
   Iterable<GeneralizedTile> getNeighboursOf(GeneralizedTile currentTile) {
     Queue<GeneralizedTile> result = Queue<GeneralizedTile>();
     for (int newX = Math.max(0, currentTile.x - 1);
@@ -100,6 +104,7 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
   AStar2DGeneralizedBenchmark() : super("AStar_Generalized_2D");
 
   // The benchmark code.
+  @override
   void run() {
     resultQueue = aStar.findPathSync(maze.start, maze.goal);
   }
@@ -109,12 +114,14 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
   AStar<GeneralizedTile> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
+  @override
   void setup() {
     maze = GeneralizedMaze(textMap);
     aStar = AStar(maze);
   }
 
   // Not measures teardown code executed after the benchark runs.
+  @override
   void teardown() {
     print(resultQueue);
   }

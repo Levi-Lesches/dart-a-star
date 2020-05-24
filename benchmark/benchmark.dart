@@ -26,6 +26,7 @@ class Simple2DNode extends Object with Node {
 
   Simple2DNode(this.x, this.y, this.nodeInherentCost);
 
+  @override
   toString() => "[$x,$y]";
 }
 
@@ -71,16 +72,20 @@ class Simple2DMaze implements Graph<Simple2DNode> {
 
   Simple2DNode getNode(int x, int y) => tiles[x][y];
 
+  @override
   List<Simple2DNode> allNodes = List();
 
+  @override
   num getDistance(Simple2DNode a, Simple2DNode b) {
     return b.nodeInherentCost;
   }
 
+  @override
   num getHeuristicDistance(Simple2DNode a, Simple2DNode b) {
     return Math.sqrt(Math.pow((a.x - b.x), 2) + Math.pow((a.y - b.y), 2));
   }
 
+  @override
   Iterable<Simple2DNode> getNeighboursOf(Simple2DNode node) {
     return node.connectedNodes;
   }
@@ -101,6 +106,7 @@ class AStarBenchmark extends BenchmarkBase {
   AStarBenchmark() : super("AStar");
 
   // The benchmark code.
+  @override
   void run() {
     resultQueue = aStar.findPathSync(maze.getNode(0, 0), maze.getNode(7, 7));
   }
@@ -110,12 +116,14 @@ class AStarBenchmark extends BenchmarkBase {
   AStar<Simple2DNode> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
+  @override
   void setup() {
     maze = Simple2DMaze(costMap);
     aStar = AStar(maze);
   }
 
   // Not measures teardown code executed after the benchark runs.
+  @override
   void teardown() {
     print(resultQueue);
   }

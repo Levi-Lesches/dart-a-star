@@ -35,16 +35,19 @@ class AStar2DBenchmark extends BenchmarkBase {
   AStar2DBenchmark() : super("AStar2D");
 
   // The benchmark code.
+  @override
   void run() {
     aStar2D(maze);
   }
 
   // Not measured setup code executed prior to the benchmark runs.
+  @override
   void setup() {
     maze = Maze.parse(textMap);
   }
 
   // Not measures teardown code executed after the benchark runs.
+  @override
   void teardown() {}
 }
 

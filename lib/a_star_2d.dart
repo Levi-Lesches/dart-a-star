@@ -88,9 +88,12 @@ class Tile {
         _hashcode = "$x,$y".hashCode,
         _str = '[X:$x, Y:$y, Obs:$obstacle]';
 
+  @override
   String toString() => _str;
+  @override
   int get hashCode => _hashcode;
 
+  @override
   bool operator ==(dynamic tile) {
     return tile is Tile && x == tile.x && y == tile.y;
   }
