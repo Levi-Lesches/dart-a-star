@@ -128,7 +128,7 @@ Queue<Tile> aStar2D(Maze maze) {
 
   open.add(start);
 
-  while (open.length > 0) {
+  while (open.isNotEmpty) {
     var bestCost = open[0]._f;
     var bestTileIndex = 0;
 
