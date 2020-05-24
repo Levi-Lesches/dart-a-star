@@ -40,7 +40,7 @@ class Maze {
     for (var y = 0; y < height; y++) {
       final row = <Tile>[];
       for (var x = 0; x < width; x++) {
-        row.add(Tile(x, y, rand.nextBool()));
+        row.add(Tile(x, y, obstacle: rand.nextBool()));
       }
       tiles.add(row);
     }
@@ -61,7 +61,7 @@ class Maze {
       for (var colNum = 0; colNum < lineTiles.length; colNum++) {
         final t = lineTiles[colNum];
         final obstacle = (t == 'x');
-        final tile = Tile(colNum, rowNum, obstacle);
+        final tile = Tile(colNum, rowNum, obstacle: obstacle);
         if (t == 's') {
           start = tile;
         }
@@ -90,7 +90,7 @@ class Tile {
   double _h = -1.0; // heuristic estimate
   int _parentIndex = -1;
 
-  Tile(this.x, this.y, this.obstacle)
+  Tile(this.x, this.y, {this.obstacle = false})
       : _hashcode = '$x,$y'.hashCode,
         _str = '[X:$x, Y:$y, Obs:$obstacle]';
 

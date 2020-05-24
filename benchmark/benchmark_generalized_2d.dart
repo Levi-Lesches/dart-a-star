@@ -21,7 +21,8 @@ import 'package:a_star/a_star_2d.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 class GeneralizedTile extends Tile with Node<GeneralizedTile> {
-  GeneralizedTile(int x, int y, bool obstacle) : super(x, y, obstacle);
+  GeneralizedTile(int x, int y, {bool obstacle = false})
+      : super(x, y, obstacle: obstacle);
 }
 
 class GeneralizedMaze implements Graph<GeneralizedTile> {
@@ -43,7 +44,7 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
       tiles.add(row);
       for (var j = 0; j < numColumns; j++) {
         final orig = maze.tiles[i][j];
-        row.add(GeneralizedTile(orig.x, orig.y, orig.obstacle));
+        row.add(GeneralizedTile(orig.x, orig.y, obstacle: orig.obstacle));
       }
     }
 
