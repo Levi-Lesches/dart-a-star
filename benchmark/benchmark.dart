@@ -27,7 +27,7 @@ class Simple2DNode extends Object with Node<Simple2DNode> {
   Simple2DNode(this.x, this.y, this.nodeInherentCost);
 
   @override
-  toString() => '[$x,$y]';
+  String toString() => '[$x,$y]';
 }
 
 class Simple2DMaze implements Graph<Simple2DNode> {
@@ -125,6 +125,6 @@ class AStarBenchmark extends BenchmarkBase {
   }
 }
 
-main() {
+void main() {
   AStarBenchmark().report();
 }

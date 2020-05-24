@@ -70,7 +70,7 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
   Iterable<SimpleNode> getNeighboursOf(SimpleNode node) => node.connectedNodes;
 }
 
-main() {
+void main() {
   group('A* star generic', () {
     SimpleNodeNetwork network;
     AStar<SimpleNode> aStar;

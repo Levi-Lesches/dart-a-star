@@ -51,6 +51,6 @@ class AStar2DBenchmark extends BenchmarkBase {
   void teardown() {}
 }
 
-main() {
+void main() {
   AStar2DBenchmark().report();
 }

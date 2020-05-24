@@ -128,6 +128,6 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
   }
 }
 
-main() {
+void main() {
   AStar2DGeneralizedBenchmark().report();
 }

@@ -44,7 +44,7 @@ class CanvasMap {
         tileWidth = canvas.width / maze.tiles[0].length,
         tileHeight = canvas.height / maze.tiles[0].length;
 
-  drawTile(Tile tile) {
+  void drawTile(Tile tile) {
     final loc = coords(tile);
     ctx.beginPath();
     if (tile.obstacle) {
@@ -57,7 +57,7 @@ class CanvasMap {
       ..fill();
   }
 
-  drawStart(Tile start) {
+  void drawStart(Tile start) {
     final loc = coords(start);
     ctx
       ..beginPath()
@@ -66,7 +66,7 @@ class CanvasMap {
       ..stroke();
   }
 
-  drawGoal(Tile start) {
+  void drawGoal(Tile start) {
     final loc = coords(start);
     ctx
       ..beginPath()
@@ -75,7 +75,7 @@ class CanvasMap {
       ..stroke();
   }
 
-  drawLine(Tile start, Tile end) {
+  void drawLine(Tile start, Tile end) {
     final moveTo = coords(start);
     final lineTo = coords(end);
     ctx
@@ -92,7 +92,7 @@ class CanvasMap {
     return [x, y];
   }
 
-  drawMap() {
+  void drawMap() {
     for (var y = 0; y < maze.tiles.length; y++) {
       final row = maze.tiles[y];
       for (var x = 0; x < row.length; x++) {
@@ -105,7 +105,7 @@ class CanvasMap {
     drawGoal(goalTile);
   }
 
-  drawSolution(Queue<Tile> solution) {
+  void drawSolution(Queue<Tile> solution) {
     Tile start;
     for (final tile in solution) {
       if (start == null) {
@@ -129,7 +129,7 @@ void generateMapAndSolve(CanvasElement canvas) {
   canvasMap.drawSolution(solution);
 }
 
-main() {
+void main() {
   final canvas = querySelector('#surface') as CanvasElement;
   querySelector('#b').onClick.listen((e) => generateMapAndSolve(canvas));
 
