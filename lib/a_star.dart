@@ -18,6 +18,7 @@ library a_star;
 
 import 'dart:async';
 import 'dart:collection';
+import 'package:collection/collection.dart';
 
 /// The A* class works on any class that implements the [Graph] interface.
 abstract class Graph<T extends Node<T>> {
@@ -69,6 +70,8 @@ class AStar<T extends Node<T>> {
   // TODO: cacheDistances option - tells AStar that the graph is not changing
   // in terms of traversal costs between nodes.
 
+  final PriorityQueue<T> _open =
+      HeapPriorityQueue<T>((l, r) => l._f.compareTo(r._f));
   bool _zeroed = true;
 
   final Queue<T> noValidPath = Queue<T>();
@@ -106,10 +109,9 @@ class AStar<T extends Node<T>> {
       _zeroNodes();
     }
 
-    final open = Queue<T>();
-    T lastClosed;
-
-    open.add(start);
+    _open
+      ..clear()
+      ..add(start);
     start
       .._isInOpenSet = true
       .._f = -1.0
@@ -117,18 +119,14 @@ class AStar<T extends Node<T>> {
 
     _zeroed = false;
 
-    while (open.isNotEmpty) {
+    while (_open.isNotEmpty) {
       // Find node with best (lowest) cost.
-      var currentNode = open.fold<T>(null, (a, b) {
-        if (a == null) {
-          return b;
-        }
-        return a._f < b._f ? a : b;
-      });
+      var currentNode = _open.removeFirst();
 
       if (currentNode == goal) {
         // queues are more performant when adding to the front
-        final path = Queue<T>()..add(goal);
+        final path = Queue<T>()
+          ..add(goal);
 
         // Go up the chain to recreate the path
         while (currentNode._parent != null) {
@@ -139,15 +137,13 @@ class AStar<T extends Node<T>> {
         return path;
       }
 
-      open.remove(currentNode);
       currentNode._isInOpenSet = false; // Much faster than finding nodes
       // in iterables.
-      lastClosed = currentNode;
       currentNode._isInClosedSet = true;
 
       for (final candidate in graph.getNeighboursOf(currentNode)) {
         final distance = graph.getDistance(currentNode, candidate);
-        if (distance != double.infinity || (candidate == goal)) {
+        if (distance != double.infinity) {
           // If the new node is open or the new node is our destination.
           if (candidate._isInClosedSet) {
             continue;
@@ -155,12 +151,12 @@ class AStar<T extends Node<T>> {
 
           if (!candidate._isInOpenSet) {
             candidate
-              .._parent = lastClosed
+              .._parent = currentNode
               .._g = currentNode._g + distance;
             final h = graph.getHeuristicDistance(candidate, goal);
             candidate._f = candidate._g + h;
 
-            open.add(candidate);
+            _open.add(candidate);
             candidate._isInOpenSet = true;
           }
         }
