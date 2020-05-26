@@ -125,8 +125,7 @@ class AStar<T extends Node<T>> {
 
       if (currentNode == goal) {
         // queues are more performant when adding to the front
-        final path = Queue<T>()
-          ..add(goal);
+        final path = Queue<T>()..add(goal);
 
         // Go up the chain to recreate the path
         while (currentNode._parent != null) {
@@ -137,9 +136,10 @@ class AStar<T extends Node<T>> {
         return path;
       }
 
-      currentNode._isInOpenSet = false; // Much faster than finding nodes
-      // in iterables.
-      currentNode._isInClosedSet = true;
+      // Much faster than finding nodes in iterables.
+      currentNode
+        .._isInOpenSet = false
+        .._isInClosedSet = true;
 
       for (final candidate in graph.getNeighboursOf(currentNode)) {
         final distance = graph.getDistance(currentNode, candidate);
