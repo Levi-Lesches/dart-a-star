@@ -14,64 +14,71 @@
  limitations under the License.
 */
 
+import 'dart:collection';
+import 'dart:math' as math;
 import 'package:a_star/a_star.dart';
 import 'package:a_star/a_star_2d.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
-import 'dart:collection';
-import 'dart:math' as Math;
 
-class GeneralizedTile extends Tile with Node {
-  GeneralizedTile(int x, int y, bool obstacle) : super(x, y, obstacle);
+class GeneralizedTile extends Tile with Node<GeneralizedTile> {
+  GeneralizedTile(int x, int y, {bool obstacle = false})
+      : super(x, y, obstacle: obstacle);
 }
 
 class GeneralizedMaze implements Graph<GeneralizedTile> {
-  List<List<GeneralizedTile>> tiles = new List();
-  GeneralizedTile start;
-  GeneralizedTile goal;
-  
-  int numColumns;
-  int numRows;
-  
+  List<List<GeneralizedTile>> tiles = [];
+  late GeneralizedTile start;
+  late GeneralizedTile goal;
+
+  late int numColumns;
+  late int numRows;
+
   GeneralizedMaze(String map) {
-    var maze = new Maze.parse(map);  // Lazy. Outsource parsing to the original.
-    
+    final maze = Maze.parse(map); // Lazy. Outsource parsing to the original.
+
     numRows = maze.tiles.length;
     numColumns = maze.tiles[0].length;
-    
-    for (int i = 0; i < numRows; i++) {
-      var row = new List<GeneralizedTile>();
+
+    for (var i = 0; i < numRows; i++) {
+      final row = <GeneralizedTile>[];
       tiles.add(row);
-      for (int j = 0; j < numColumns; j++) {
-        var orig = maze.tiles[i][j];
-        row.add(new GeneralizedTile(orig.x, orig.y, orig.obstacle));
+      for (var j = 0; j < numColumns; j++) {
+        final orig = maze.tiles[i][j];
+        row.add(GeneralizedTile(orig.x, orig.y, obstacle: orig.obstacle));
       }
     }
-    
+
     start = tiles[maze.start.y][maze.start.x];
     goal = tiles[maze.goal.y][maze.goal.x];
   }
-  
 
-  Iterable<GeneralizedTile> get allNodes {
-    return tiles.expand((row) => row);
-  }
+  @override
+  Iterable<GeneralizedTile> get allNodes => tiles.expand((row) => row);
 
+  @override
   num getDistance(GeneralizedTile a, GeneralizedTile b) {
-    if (b.obstacle) return null;
-    return Math.sqrt(Math.pow(b.x-a.x, 2) +
-        Math.pow(b.y-a.y, 2));
+    if (b.obstacle) {
+      return double.infinity;
+    }
+    return math.sqrt(math.pow(b.x - a.x, 2) + math.pow(b.y - a.y, 2));
   }
 
+  @override
   num getHeuristicDistance(GeneralizedTile tile, GeneralizedTile goal) {
-    int x = tile.x-goal.x;
-    int y = tile.y-goal.y;
-    return Math.sqrt(x*x+y*y);
+    final x = tile.x - goal.x;
+    final y = tile.y - goal.y;
+    return math.sqrt(x * x + y * y);
   }
 
-  Iterable<Tile> getNeighboursOf(GeneralizedTile currentTile) {
-    Queue<GeneralizedTile> result = new Queue<GeneralizedTile>();
-    for (int newX = Math.max(0, currentTile.x-1); newX <= Math.min(numColumns-1, currentTile.x+1); newX++) {
-      for (int newY = Math.max(0, currentTile.y-1); newY <= Math.min(numRows-1, currentTile.y+1); newY++) {
+  @override
+  Iterable<GeneralizedTile> getNeighboursOf(GeneralizedTile currentTile) {
+    final result = Queue<GeneralizedTile>();
+    for (var newX = math.max(0, currentTile.x - 1);
+        newX <= math.min(numColumns - 1, currentTile.x + 1);
+        newX++) {
+      for (var newY = math.max(0, currentTile.y - 1);
+          newY <= math.min(numRows - 1, currentTile.y + 1);
+          newY++) {
         result.add(tiles[newY][newX]);
       }
     }
@@ -79,13 +86,11 @@ class GeneralizedMaze implements Graph<GeneralizedTile> {
   }
 }
 
-/**
- * This is here to compare the new, generalized A* approach to the older,
- * 2D-only code. The goal is to attain similar performance even with the
- * more flexible design.
- */
+/// This is here to compare the new, generalized A* approach to the older,
+/// 2D-only code. The goal is to attain similar performance even with the
+/// more flexible design.
 class AStar2DGeneralizedBenchmark extends BenchmarkBase {
-  static const String textMap = """
+  static const String textMap = '''
       soooooooxoxo
       oxxxxxooxoxo
       oxxoxoooxoxx
@@ -95,31 +100,34 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
       oxxoxxooxoxo
       oxxoxoooxoxx
       oxoooxxxooog
-      """;
-  
-  AStar2DGeneralizedBenchmark() : super("AStar_Generalized_2D");
+      ''';
+
+  AStar2DGeneralizedBenchmark() : super('AStar_Generalized_2D');
 
   // The benchmark code.
+  @override
   void run() {
     resultQueue = aStar.findPathSync(maze.start, maze.goal);
   }
-  
-  GeneralizedMaze maze;
-  Queue<Tile> resultQueue;
-  AStar aStar;
+
+  late GeneralizedMaze maze;
+  late Queue<GeneralizedTile> resultQueue;
+  late AStar<GeneralizedTile> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
+  @override
   void setup() {
-    maze = new GeneralizedMaze(textMap);
-    aStar = new AStar(maze);
+    maze = GeneralizedMaze(textMap);
+    aStar = AStar(maze);
   }
 
   // Not measures teardown code executed after the benchark runs.
-  void teardown() { 
+  @override
+  void teardown() {
     print(resultQueue);
   }
 }
 
-main() {
-  new AStar2DGeneralizedBenchmark().report();
+void main() {
+  AStar2DGeneralizedBenchmark().report();
 }

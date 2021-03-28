@@ -16,175 +16,154 @@
 
 library a_star;
 
-import 'dart:collection';
 import 'dart:async';
+import 'dart:collection';
+import 'package:collection/collection.dart';
 
-/**
- * The A* class works on any class that implements the [Graph] interface.
- */
-abstract class Graph<T extends Node> {
-  /**
-   * Returns an [Iterable] of all the nodes of the [Graph]. This is accessed
-   * only during the setup phase, so it's not critical to optimize this.
-   * 
-   * If you have a 2D [List] of Lists called [:tiles:], for example, you can 
-   * simply do:
-   *     get allNodes => tiles.expand((row) => row);
-   */
+/// The A* class works on any class that implements the [Graph] interface.
+abstract class Graph<T extends Node<T>> {
+  /// Returns an [Iterable] of all the nodes of the [Graph]. This is accessed
+  /// only during the setup phase, so it's not critical to optimize this.
+  ///
+  /// If you have a 2D [List] of Lists called [:tiles:], for example, you can
+  /// simply do:
+  ///     get allNodes => tiles.expand((row) => row);
   Iterable<T> get allNodes;
-  
-  /**
-   * Given two adjancent Nodes, returns the cost (distance) from [a] to [b] (the
-   * direction can matter). Returns [:null:] if [b] is not reachable from [a].
-   */
+
+  /// Given two adjancent Nodes, returns the cost (distance) from [a] to [b]
+  /// (the direction can matter). Returns [:null:] if [b] is not reachable from
+  /// [a].
   num getDistance(T a, T b);
-  
-  /**
-   * Given two nodes (not necessarily adjancent), returns an estimate of the 
-   * distance between them. The better the estimate, the more direct is
-   * the search. But better estimates also often mean slower performance.
-   * (The search works even if the return from the heuristic function is 
-   * constant. The A* search becomes breadth-first search.)
-   * 
-   * Optimize this first.
-   */
+
+  /// Given two nodes (not necessarily adjancent), returns an estimate of the
+  /// distance between them. The better the estimate, the more direct is
+  /// the search. But better estimates also often mean slower performance.
+  /// (The search works even if the return from the heuristic function is
+  /// constant. The A* search becomes breadth-first search.)
+  ///
+  /// Optimize this first.
   num getHeuristicDistance(T a, T b);
-  
-  /**
-   * Given a node, return all connected nodes.
-   */
+
+  /// Given a node, return all connected nodes.
   Iterable<T> getNeighboursOf(T node);
 }
 
-/**
- * Mixin class with which the [Graph]'s nodes should be extended. For example:
- * 
- *     class MyMapTile extends Object with Node { /* ... */ }
- *     
- * Or, in some cases, your graph nodes will already be extending something
- * else, so:
- * 
- *     class MyTraversableTile extends MyTile with Node { /* ... */ }
- */
-class Node extends Object {
-  num _f;
-  num _g;
-  Node _parent;
-  bool _isInOpenSet = false;  // Much faster than finding nodes in iterables.
+/// Mixin class with which the [Graph]'s nodes should be extended.
+///
+///     class MyTraversableTile extends MyTile with Node<MyTraversableTile> { /* ... */ }
+mixin Node<T extends Node<T>> {
+  late num _f;
+  late num _g;
+  T? _parent;
+  bool _isInOpenSet = false; // Much faster than finding nodes in iterables.
   bool _isInClosedSet = false;
 }
 
-/**
- * The A* Star algorithm itself. Instantiated with a [Graph] (e.g., a map).
- */
-class AStar<T extends Node> {
+/// The A* Star algorithm itself. Instantiated with a [Graph] (e.g., a map).
+class AStar<T extends Node<T>> {
   final Graph<T> graph;
-  
-  AStar(Graph<T> this.graph);
+
+  AStar(this.graph);
+
   // TODO: cacheNeighbours option - tells AStar that the graph is not changing
   // in terms of which nodes are neighbouring which nodes
   // TODO: cacheDistances option - tells AStar that the graph is not changing
   // in terms of traversal costs between nodes.
-  
+
+  final PriorityQueue<T> _open =
+      HeapPriorityQueue<T>((l, r) => l._f.compareTo(r._f));
   bool _zeroed = true;
-  
-  final Queue<T> NO_VALID_PATH = new Queue<T>();
-  
+
+  final Queue<T> noValidPath = Queue<T>();
+
   void _zeroNodes() {
-    graph.allNodes.forEach((Node node) {
-      node._isInClosedSet = false;
-      node._isInOpenSet = false;
-      node._parent = null;
+    for (final node in graph.allNodes) {
+      node
+        .._isInClosedSet = false
+        .._isInOpenSet = false
+        .._parent = null;
       // No need to zero out f and g, A* doesn't depend on them being set
       // to 0 (it overrides them on first access to each node).
-    });
+    }
     _zeroed = true;
   }
-  
-  /**
-   * Perform A* search from [start] to [goal] asynchronously.
-   * 
-   * Returns a [Future] that completes with the path [Queue]. (Empty [Queue]
-   * means no valid path from start to goal was found.
-   * 
-   * TODO: Optional weighing for suboptimal, but faster path finding.
-   * http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
-   */
-  Future<Queue<T>> findPath(T start, T goal) {
-    return new Future<Queue<T>>(() => findPathSync(start, goal));
-  }
-  
-  /**
-   * Perform A* search from [start] to [goal].
-   * 
-   * Returns empty [Queue] when there is no path between the two nodes.
-   * 
-   * TODO: Optional weighing for suboptimal, but faster path finding.
-   * http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
-   */
+
+  /// Perform A* search from [start] to [goal] asynchronously.
+  ///
+  /// Returns a [Future] that completes with the path [Queue]. (Empty [Queue]
+  /// means no valid path from start to goal was found.
+  ///
+  /// TODO: Optional weighing for suboptimal, but faster path finding.
+  /// http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
+  Future<Queue<T>> findPath(T start, T goal) =>
+      Future<Queue<T>>(() => findPathSync(start, goal));
+
+  /// Perform A* search from [start] to [goal].
+  ///
+  /// Returns empty [Queue] when there is no path between the two nodes.
+  ///
+  /// TODO: Optional weighing for suboptimal, but faster path finding.
+  /// http://en.wikipedia.org/wiki/A*_search_algorithm#Bounded_relaxation
   Queue<T> findPathSync(T start, T goal) {
-    if (!_zeroed) _zeroNodes();
-    
-    final Queue<T> open = new Queue<T>();
-    Node lastClosed;
-    
-    open.add(start);
-    start._isInOpenSet = true;
-    start._f = -1.0;
-    start._g = -1.0;
-    
+    if (!_zeroed) {
+      _zeroNodes();
+    }
+
+    _open
+      ..clear()
+      ..add(start);
+    start
+      .._isInOpenSet = true
+      .._f = -1.0
+      .._g = -1.0;
+
     _zeroed = false;
-    
-    while (open.isNotEmpty) {
+
+    while (_open.isNotEmpty) {
       // Find node with best (lowest) cost.
-      T currentNode = open.fold(null, (T a, T b) {
-        if (a == null) return b;
-        return a._f < b._f ? a : b;
-      });
-      
+      var currentNode = _open.removeFirst();
+
       if (currentNode == goal) {
         // queues are more performant when adding to the front
-        final Queue<T> path = new Queue<T>();
-        path.add(goal);
-        
-        // Go up the chain to recreate the path 
+        final path = Queue<T>()..add(goal);
+
+        // Go up the chain to recreate the path
         while (currentNode._parent != null) {
-          currentNode = currentNode._parent;
+          currentNode = currentNode._parent!;
           path.addFirst(currentNode);
         }
-        
+
         return path;
       }
-      
-      open.remove(currentNode);
-      currentNode._isInOpenSet = false;  // Much faster than finding nodes 
-                                         // in iterables.
-      lastClosed = currentNode;
-      currentNode._isInClosedSet = true;
-      
-      for (final T candidate in graph.getNeighboursOf(currentNode)) {
-        num distance = graph.getDistance(currentNode, candidate);
-        if (distance != null || (candidate == goal)) {  
+
+      // Much faster than finding nodes in iterables.
+      currentNode
+        .._isInOpenSet = false
+        .._isInClosedSet = true;
+
+      for (final candidate in graph.getNeighboursOf(currentNode)) {
+        final distance = graph.getDistance(currentNode, candidate);
+        if (distance != double.infinity) {
           // If the new node is open or the new node is our destination.
           if (candidate._isInClosedSet) {
             continue;
           }
-          
+
           if (!candidate._isInOpenSet) {
-            candidate._parent = lastClosed;
-            
-            candidate._g = currentNode._g + distance;
-            num h = graph.getHeuristicDistance(candidate, goal);
+            candidate
+              .._parent = currentNode
+              .._g = currentNode._g + distance;
+            final h = graph.getHeuristicDistance(candidate, goal);
             candidate._f = candidate._g + h;
-            
-            open.add(candidate);
+
+            _open.add(candidate);
             candidate._isInOpenSet = true;
           }
         }
       }
     }
-    
+
     // No path found.
-    return NO_VALID_PATH;
+    return noValidPath;
   }
 }
