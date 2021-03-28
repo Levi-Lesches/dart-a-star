@@ -6,7 +6,7 @@ class SimpleNode extends Object with Node<SimpleNode> {
 
   SimpleNode(this.nodeInherentCost);
 
-  Iterable<SimpleNode> connectedNodes;
+  Iterable<SimpleNode> connectedNodes = [];
 
   num getCostFrom(SimpleNode other) =>
       nodeInherentCost; // This is how it works in many games - the node itself
@@ -16,9 +16,9 @@ class SimpleNode extends Object with Node<SimpleNode> {
 
 class SimpleNodeNetwork extends Graph<SimpleNode> {
   @override
-  Iterable<SimpleNode> allNodes; // TODO implement this getter
+  late Iterable<SimpleNode> allNodes;
 
-  SimpleNode start, a, b, c, d, goal;
+  late SimpleNode start, a, b, c, d, goal;
 
   SimpleNodeNetwork() {
     // The testing network is set up as follows:
@@ -72,8 +72,8 @@ class SimpleNodeNetwork extends Graph<SimpleNode> {
 
 void main() {
   group('A* star generic', () {
-    SimpleNodeNetwork network;
-    AStar<SimpleNode> aStar;
+    late SimpleNodeNetwork network;
+    late AStar<SimpleNode> aStar;
 
     setUp(() {
       network = SimpleNodeNetwork();

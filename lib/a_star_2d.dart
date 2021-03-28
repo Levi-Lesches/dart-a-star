@@ -26,7 +26,7 @@ class Maze {
 
   Maze(this.tiles, this.start, this.goal);
 
-  factory Maze.random({int width, int height}) {
+  factory Maze.random({int? width, int? height}) {
     if (width == null) {
       throw ArgumentError('width must not be null');
     }
@@ -51,8 +51,8 @@ class Maze {
   factory Maze.parse(String map) {
     final tiles = <List<Tile>>[];
     final rows = map.trim().split('\n');
-    Tile start;
-    Tile goal;
+    Tile? start;
+    Tile? goal;
 
     for (var rowNum = 0; rowNum < rows.length; rowNum++) {
       final row = <Tile>[];
@@ -74,7 +74,8 @@ class Maze {
       tiles.add(row);
     }
 
-    return Maze(tiles, start, goal);
+    // TODO: Error handling for invalid strings, including null start/goal.
+    return Maze(tiles, start!, goal!);
   }
 }
 

@@ -31,13 +31,13 @@ class Simple2DNode extends Object with Node<Simple2DNode> {
 }
 
 class Simple2DMaze implements Graph<Simple2DNode> {
-  List<List<Simple2DNode>> tiles;
+  late List<List<Simple2DNode>> tiles;
 
   Simple2DMaze(List<List<num>> costMap) {
-    tiles = List<List<Simple2DNode>>(costMap.length);
+    tiles = [];
     for (var i = 0; i < costMap.length; i++) {
       final rawRow = costMap[i];
-      tiles[i] = List<Simple2DNode>(rawRow.length);
+      tiles[i] = [];
       for (var j = 0; j < rawRow.length; j++) {
         final rawTile = rawRow[j];
         tiles[i][j] = Simple2DNode(j, i, rawTile);
@@ -107,9 +107,9 @@ class AStarBenchmark extends BenchmarkBase {
     resultQueue = aStar.findPathSync(maze.getNode(0, 0), maze.getNode(7, 7));
   }
 
-  Simple2DMaze maze;
-  Queue<Simple2DNode> resultQueue;
-  AStar<Simple2DNode> aStar;
+  late Simple2DMaze maze;
+  late Queue<Simple2DNode> resultQueue;
+  late AStar<Simple2DNode> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
   @override

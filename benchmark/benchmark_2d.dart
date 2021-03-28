@@ -30,7 +30,7 @@ class AStar2DBenchmark extends BenchmarkBase {
       oxoooxxxooog
       ''';
 
-  Maze maze;
+  late Maze maze;
 
   AStar2DBenchmark() : super('AStar2D');
 

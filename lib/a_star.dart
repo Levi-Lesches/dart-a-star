@@ -52,9 +52,9 @@ abstract class Graph<T extends Node<T>> {
 ///
 ///     class MyTraversableTile extends MyTile with Node<MyTraversableTile> { /* ... */ }
 mixin Node<T extends Node<T>> {
-  num _f;
-  num _g;
-  T _parent;
+  late num _f;
+  late num _g;
+  T? _parent;
   bool _isInOpenSet = false; // Much faster than finding nodes in iterables.
   bool _isInClosedSet = false;
 }
@@ -129,7 +129,7 @@ class AStar<T extends Node<T>> {
 
         // Go up the chain to recreate the path
         while (currentNode._parent != null) {
-          currentNode = currentNode._parent;
+          currentNode = currentNode._parent!;
           path.addFirst(currentNode);
         }
 

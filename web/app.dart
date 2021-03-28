@@ -26,8 +26,8 @@ class CanvasMap {
   final Tile startTile;
   final Tile goalTile;
 
-  final int width;
-  final int height;
+  final int? width;
+  final int? height;
   final int numRows;
   final int numCols;
   final num tileWidth;
@@ -41,8 +41,8 @@ class CanvasMap {
         height = canvas.height,
         numRows = maze.tiles.length,
         numCols = maze.tiles[0].length,
-        tileWidth = canvas.width / maze.tiles[0].length,
-        tileHeight = canvas.height / maze.tiles[0].length;
+        tileWidth = canvas.width! / maze.tiles[0].length,
+        tileHeight = canvas.height! / maze.tiles[0].length;
 
   void drawTile(Tile tile) {
     final loc = coords(tile);
@@ -106,7 +106,7 @@ class CanvasMap {
   }
 
   void drawSolution(Queue<Tile> solution) {
-    Tile start;
+    Tile? start;
     for (final tile in solution) {
       if (start == null) {
         start = tile;
@@ -119,7 +119,7 @@ class CanvasMap {
 }
 
 void generateMapAndSolve(CanvasElement canvas) {
-  canvas.context2D.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.context2D.clearRect(0, 0, canvas.width!, canvas.height!);
 
   final maze = Maze.random(width: 10, height: 10);
   final canvasMap = CanvasMap(canvas, maze)..drawMap();
@@ -130,8 +130,8 @@ void generateMapAndSolve(CanvasElement canvas) {
 }
 
 void main() {
-  final canvas = querySelector('#surface') as CanvasElement;
-  querySelector('#b').onClick.listen((e) => generateMapAndSolve(canvas));
+  final canvas = querySelector('#surface') as CanvasElement?;
+  querySelector('#b')!.onClick.listen((e) => generateMapAndSolve(canvas!));
 
 //  var textMap = """
 //            sooooooo

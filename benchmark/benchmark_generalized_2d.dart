@@ -27,11 +27,11 @@ class GeneralizedTile extends Tile with Node<GeneralizedTile> {
 
 class GeneralizedMaze implements Graph<GeneralizedTile> {
   List<List<GeneralizedTile>> tiles = [];
-  GeneralizedTile start;
-  GeneralizedTile goal;
+  late GeneralizedTile start;
+  late GeneralizedTile goal;
 
-  int numColumns;
-  int numRows;
+  late int numColumns;
+  late int numRows;
 
   GeneralizedMaze(String map) {
     final maze = Maze.parse(map); // Lazy. Outsource parsing to the original.
@@ -110,9 +110,9 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
     resultQueue = aStar.findPathSync(maze.start, maze.goal);
   }
 
-  GeneralizedMaze maze;
-  Queue<GeneralizedTile> resultQueue;
-  AStar<GeneralizedTile> aStar;
+  late GeneralizedMaze maze;
+  late Queue<GeneralizedTile> resultQueue;
+  late AStar<GeneralizedTile> aStar;
 
   // Not measured setup code executed prior to the benchmark runs.
   @override
