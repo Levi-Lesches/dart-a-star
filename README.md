@@ -3,7 +3,7 @@
 A simple A* algorithm implemented in [Dart](http://dartlang.org).
 An example of path finding.
 
-Last updated 2013-11.
+Last updated 2021-03.
 
 The original 2D algorithm was ported from
 [this JavaScript example](http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html). 
