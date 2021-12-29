@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:a_star/a_star.dart';
+import 'package:test/test.dart';
 
 class SimpleNode extends Object with Node<SimpleNode> {
   num nodeInherentCost;
@@ -8,10 +8,10 @@ class SimpleNode extends Object with Node<SimpleNode> {
 
   Iterable<SimpleNode> connectedNodes = [];
 
-  num getCostFrom(SimpleNode other) =>
-      nodeInherentCost; // This is how it works in many games - the node itself
-// has a cost. For example, a forrest has 2x the cost
-// of a plain.
+  // This is how it works in many games - the node itself
+  // has a cost. For example, a forest has 2x the cost
+  // of a plain.
+  num getCostFrom(SimpleNode other) => nodeInherentCost;
 }
 
 class SimpleNodeNetwork extends Graph<SimpleNode> {
