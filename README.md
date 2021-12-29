@@ -3,7 +3,7 @@
 A simple A* algorithm implemented in [Dart](http://dartlang.org).
 An example of path finding.
 
-Last updated 2021-03.
+Last updated 2021-12-29.
 
 The original 2D algorithm was ported from
 [this JavaScript example](http://46dogs.blogspot.com/2009/10/star-pathroute-finding-javascript-code.html). 
@@ -12,49 +12,53 @@ in November 2013. That one is fairly optimized.
 
 See LICENSE file for license details.
 
-See running example at http://sethladd.github.io/dart-a-star/deploy/
+See an (old) running example at http://sethladd.github.io/dart-a-star/deploy/
 
 # Example
 
 There are two separate A* algorithms in this package. One of them, `aStar2D`, is
 specific to **2D grid maps.** The usage can be as simple as:
 
-    import 'package:a_star/a_star_2d.dart';
-    main() {
-      String textMap = """
-            sooooooo
-            oxxxxxoo
-            oxxoxooo
-            oxoogxxx      
-            """;
-      Maze maze = new Maze.parse(textMap);
-      Queue<Tile> solution = aStar2D(maze);
-    }
+```dart
+import 'package:a_star/a_star_2d.dart';
+main() {
+  String textMap = """
+        sooooooo
+        oxxxxxoo
+        oxxoxooo
+        oxoogxxx      
+        """;
+  Maze maze = new Maze.parse(textMap);
+  Queue<Tile> solution = aStar2D(maze);
+}
+```
 
 The second algorithm is **generic** and works on any graph (e.g. 3D grids, mesh
 networks). The usage is best explained with an example (details below):
 
-    import 'package:a_star/a_star.dart';
-    
-    class TerrainTile extends Object with Node {
-      // ...
-    }
-    class TerrainMap implements Graph<TerrainTile> {
-      // Must implement 4 methods.
-      Iterable<T> get allNodes => /* ... */
-      num getDistance(T a, T b) => /* ... */
-      num getHeuristicDistance(T a, T b) => /* ... */
-      Iterable<T> getNeighboursOf(T node) => /* ... */
-    }
-    
-    main() {
-      var map = new TerrainMap();
-      var pathFinder = new AStar(map);
-      var start = /* ... */
-      var goal = /* ... */
-      pathFinder.findPath(start, goal)
-      .then((path) => print("The best path from $start to $goal is: $path"));
-    }
+```dart
+import 'package:a_star/a_star.dart';
+
+class TerrainTile extends Object with Node {
+  // ...
+}
+class TerrainMap implements Graph<TerrainTile> {
+  // Must implement 4 methods.
+  Iterable<T> get allNodes => /* ... */
+  num getDistance(T a, T b) => /* ... */
+  num getHeuristicDistance(T a, T b) => /* ... */
+  Iterable<T> getNeighboursOf(T node) => /* ... */
+}
+
+main() {
+  var map = new TerrainMap();
+  var pathFinder = new AStar(map);
+  var start = /* ... */
+  var goal = /* ... */
+  pathFinder.findPath(start, goal)
+  .then((path) => print("The best path from $start to $goal is: $path"));
+}
+```
 
 **Explanation:** Here, we have a `TerrainMap` of `TerrainTile` nodes. The only
 requirements are that `TerrainMap` implements `Graph` (4 methods) and
@@ -79,3 +83,4 @@ Please file bugs at https://github.com/sethladd/dart-a-star/issues
 
 * https://github.com/PedersenThomas
 * https://github.com/filiph
+* https://github.com/eseidel
