@@ -1,10 +1,14 @@
 import "package:collection/collection.dart";
 import "state.dart";
 
+/// Runs the A* algorithm on the given state, returning the first goal state, or null. 
+/// 
+/// If [verbose] is true, this will print debug info about which states were expanded during the 
+/// search. Once the algorithm reaches [limit] states (1,000 by default), it returns null to 
+/// indicate failure.
+/// 
+/// To replay the path from the [start] to the goal state, use [AStarState.reconstructPath].
 T? aStar<T extends AStarState<T>>(T start, {bool verbose = false, int limit = 1000}) {
-  // A* states _do_ implement [Comparable], but if this comparison function isn't provided,
-  // that is checked at runtime for every element, which slows things down.
-  // See https://pub.dev/documentation/collection/latest/collection/PriorityQueue/PriorityQueue.html
   if (!start.isFinalized) throw StateError("A* State must be finalized");
   final open = PriorityQueue<T>((a, b) => a.compareTo(b))..add(start);
   final opened = <T>{start};
