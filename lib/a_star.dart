@@ -16,6 +16,10 @@
 
 library a_star;
 
+export "src/algorithm.dart";
+export "src/state.dart";
+export "src/transition.dart";
+
 import 'dart:async';
 import 'dart:collection';
 import 'package:collection/collection.dart';
@@ -30,12 +34,12 @@ abstract class Graph<T extends Node<T>> {
   ///     get allNodes => tiles.expand((row) => row);
   Iterable<T> get allNodes;
 
-  /// Given two adjancent Nodes, returns the cost (distance) from [a] to [b]
+  /// Given two adjacent Nodes, returns the cost (distance) from [a] to [b]
   /// (the direction can matter). Returns [:null:] if [b] is not reachable from
   /// [a].
   num getDistance(T a, T b);
 
-  /// Given two nodes (not necessarily adjancent), returns an estimate of the
+  /// Given two nodes (not necessarily adjacent), returns an estimate of the
   /// distance between them. The better the estimate, the more direct is
   /// the search. But better estimates also often mean slower performance.
   /// (The search works even if the return from the heuristic function is
@@ -66,7 +70,7 @@ class AStar<T extends Node<T>> {
   AStar(this.graph);
 
   // TODO: cacheNeighbours option - tells AStar that the graph is not changing
-  // in terms of which nodes are neighbouring which nodes
+  // in terms of which nodes are neighboring which nodes
   // TODO: cacheDistances option - tells AStar that the graph is not changing
   // in terms of traversal costs between nodes.
 
