@@ -23,11 +23,11 @@ T? aStar<T extends AStarState<T>>(T start, {bool verbose = false, int limit = 10
     if (node.isGoal()) {
       return node;
     }
+    if (count++ >= limit) {
+      if (verbose) print("ABORT: Hit A* limit");  // ignore: avoid_print
+      return null;
+    }
     for (final neighbor in node.getNeighbors()) {
-      if (count++ >= limit) {
-        if (verbose) print("ABORT: Hit A* limit");  // ignore: avoid_print
-        return null;
-      }
       if (closed.contains(neighbor)) continue;
       if (opened.contains(neighbor)) continue;
       if (verbose) print("[$count]   Got: ${neighbor.hashed}");  // ignore: avoid_print
