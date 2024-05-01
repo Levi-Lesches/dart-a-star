@@ -2,8 +2,7 @@
 
 ## 1.1.0
 * Updated to Dart 3.0
-* Added more generic AStarState API, which allows for an infinite or non-physical grid
-* Added AStarTransition, which describes going from one state to another
+* Added a more generic API, which allows for an infinite or non-physical grid
 
 ## 1.0.0
 * Updated for Dart 2.15+ null safety
