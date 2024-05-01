@@ -14,11 +14,9 @@
  limitations under the License.
 */
 
-library a_star;
-
 export "src/algorithm.dart";
+export "src/node.dart";
 export "src/state.dart";
-export "src/transition.dart";
 
 import 'dart:async';
 import 'dart:collection';

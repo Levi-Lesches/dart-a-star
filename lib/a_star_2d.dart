@@ -14,8 +14,6 @@
  limitations under the License.
 */
 
-library a_star_2d;
-
 import 'dart:collection';
 import 'dart:math' as math;
 
@@ -80,7 +78,8 @@ class Maze {
 }
 
 class Tile {
-  final int x, y;
+  final int x;
+  final int y;
   final bool obstacle;
   final int _hashcode;
   final String _str;
@@ -195,9 +194,10 @@ Queue<Tile> aStar2D(Maze maze) {
             final tile = map[newY][newX].._parentIndex = closed.length - 1;
 
             tile
-              .._g = currentTile._g +
-                  math.sqrt(math.pow(tile.x - currentTile.x, 2) +
-                      math.pow(tile.y - currentTile.y, 2))
+              .._g = currentTile._g + math.sqrt(
+                  math.pow(tile.x - currentTile.x, 2) +
+                  math.pow(tile.y - currentTile.y, 2),
+                )
               .._h = heuristic(tile, goal)
               .._f = tile._g + tile._h;
 

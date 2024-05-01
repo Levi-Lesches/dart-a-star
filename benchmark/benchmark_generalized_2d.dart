@@ -123,6 +123,7 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
   // Not measures teardown code executed after the benchmark runs.
   @override
   void teardown() {
+    // ignore: avoid_print
     print(resultQueue);
   }
 }
