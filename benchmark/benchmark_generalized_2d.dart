@@ -21,8 +21,7 @@ import 'package:a_star/a_star_2d.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 class GeneralizedTile extends Tile with Node<GeneralizedTile> {
-  GeneralizedTile(int x, int y, {bool obstacle = false})
-      : super(x, y, obstacle: obstacle);
+  GeneralizedTile(super.x, super.y, {super.obstacle = false});
 }
 
 class GeneralizedMaze implements Graph<GeneralizedTile> {
@@ -121,9 +120,10 @@ class AStar2DGeneralizedBenchmark extends BenchmarkBase {
     aStar = AStar(maze);
   }
 
-  // Not measures teardown code executed after the benchark runs.
+  // Not measures teardown code executed after the benchmark runs.
   @override
   void teardown() {
+    // ignore: avoid_print
     print(resultQueue);
   }
 }

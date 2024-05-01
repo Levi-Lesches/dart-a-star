@@ -20,7 +20,8 @@ import 'package:a_star/a_star.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
 
 class Simple2DNode extends Object with Node<Simple2DNode> {
-  int x, y;
+  int x;
+  int y;
   num nodeInherentCost;
   Set<Simple2DNode> connectedNodes = <Simple2DNode>{};
 
@@ -96,7 +97,7 @@ class AStarBenchmark extends BenchmarkBase {
     [1, 10, 1, 2, 1, 1, 1, 1],
     [1, 10, 1, 2, 1, 1, 1, 1],
     [1, 10, 1, 2, 1, 1, 20, 2],
-    [1, 1, 1, 2, 1, 1, 10, 1]
+    [1, 1, 1, 2, 1, 1, 10, 1],
   ];
 
   AStarBenchmark() : super('AStar');
@@ -118,9 +119,10 @@ class AStarBenchmark extends BenchmarkBase {
     aStar = AStar(maze);
   }
 
-  // Not measures teardown code executed after the benchark runs.
+  // Not measures teardown code executed after the benchmark runs.
   @override
   void teardown() {
+    // ignore: avoid_print
     print(resultQueue);
   }
 }
