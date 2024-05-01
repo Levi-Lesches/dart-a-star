@@ -1,4 +1,7 @@
+// ignore_for_file: avoid_print
+
 import "package:collection/collection.dart";
+import "node.dart";
 import "state.dart";
 
 /// Runs the A* algorithm on the given state, returning the first goal state, or null. 
@@ -7,32 +10,29 @@ import "state.dart";
 /// search. Once the algorithm reaches [limit] states (1,000 by default), it returns null to 
 /// indicate failure.
 /// 
-/// To replay the path from the [start] to the goal state, use [AStarState.reconstructPath].
-T? aStar<T extends AStarState<T>>(T start, {bool verbose = false, int limit = 1000}) {
-  if (!start.isFinalized) throw StateError("A* State must be finalized");
-  final open = PriorityQueue<T>((a, b) => a.compareTo(b))..add(start);
-  final opened = <T>{start};
-  final closed = <T>{};
+/// To replay the path from the [state] to the goal state, use [AStarNode.reconstructPath].
+AStarNode<T>? aStar<T extends AStarState<T>>(T state, {bool verbose = false, int limit = 1000}) {
+  final startNode = AStarNode(state, depth: 0);
+  final opened = <AStarNode<T>>{startNode};
+  final closed = <AStarNode<T>>{};
+  final open = PriorityQueue<AStarNode<T>>()..add(startNode);
   var count = 0;
-  
+
   while (open.isNotEmpty) {
     final node = open.removeFirst();
-    if (verbose) print("[$count] Exploring: ${node.hashed}");  // ignore: avoid_print
+    if (verbose) print("[$count] Exploring: ${node.hash}");
+    if (node.state.isGoal()) return node;
     opened.remove(node);
     closed.add(node);
-    if (node.isGoal()) {
-      return node;
-    }
     if (count++ >= limit) {
-      if (verbose) print("ABORT: Hit A* limit");  // ignore: avoid_print
+      if (verbose) print("ABORT: Hit A* limit of $limit nodes");
       return null;
     }
-    for (final neighbor in node.getNeighbors()) {
-      if (closed.contains(neighbor)) continue;
-      if (opened.contains(neighbor)) continue;
-      if (verbose) print("[$count]   Got: ${neighbor.hashed}");  // ignore: avoid_print
-      open.add(neighbor);
-      opened.add(neighbor);
+    for (final newNode in node.expand()) {
+      if (closed.contains(newNode) || opened.contains(newNode)) continue;
+      if (verbose) print("[$count]   Got: ${newNode.hash}");
+      open.add(newNode);
+      opened.add(newNode);
     }
   }
   return null;
