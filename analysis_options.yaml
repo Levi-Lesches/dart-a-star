@@ -34,7 +34,7 @@ analyzer:
 linter:
   rules:
     # Rules NOT in package:very_good_analysis
-    # prefer_double_quotes: true
+    prefer_double_quotes: true
     prefer_expression_function_bodies: true
 
     # Rules to be disabled from package:very_good_analysis
@@ -48,7 +48,6 @@ linter:
     avoid_dynamic_calls: false  # this lint takes over errors in the IDE
     one_member_abstracts: false  # abstract classes are good for interfaces
     cascade_invocations: false  # this often looks uglier
-    flutter_style_todos: false
     
     # Temporarily disabled until we are ready to document
     public_member_api_docs: false
