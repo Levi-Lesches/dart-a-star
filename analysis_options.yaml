@@ -26,10 +26,7 @@ analyzer:
     strict-raw-types: true
 
   exclude: 
-    - lib/generated/**.dart
-    - lib/firebase_options.dart
-    - test/**.dart
-    - example/**.dart
+    - benchmark/*.dart
 
 linter:
   rules:

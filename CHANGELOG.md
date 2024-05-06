@@ -1,8 +1,9 @@
 # CHANGES
 
-## 1.1.0
+## 2.0.0
 * Updated to Dart 3.0
 * Added a more generic API, which allows for an infinite or non-physical grid
+* **Breaking**: Removed the legacy API
 
 ## 1.0.0
 * Updated for Dart 2.15+ null safety
