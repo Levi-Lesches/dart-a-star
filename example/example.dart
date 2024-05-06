@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import "dart:math";
 
 import "package:a_star/a_star.dart";
