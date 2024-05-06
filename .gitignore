@@ -1,3 +1,7 @@
+# Temporarily removed from the repo for maintenance
+benchmark
+test/a_star_test.dart
+
 .children
 .project
 .DS_Store
