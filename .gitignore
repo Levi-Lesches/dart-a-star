@@ -1,6 +1,6 @@
 # Temporarily removed from the repo for maintenance
 benchmark
-test
+test/a_star_test.dart
 
 .children
 .project

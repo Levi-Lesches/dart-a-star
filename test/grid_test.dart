@@ -1,7 +1,5 @@
-// ignore_for_file: avoid_print
-
 import "dart:math";
-
+import "package:test/test.dart";
 import "package:a_star/a_star.dart";
 
 class CoordinatesState extends AStarState<CoordinatesState> {
@@ -38,19 +36,17 @@ class CoordinatesState extends AStarState<CoordinatesState> {
   String hash() => "($x, $y)";
 }
 
-void main() {
+void main() => test("Simple path should be exactly 21 spaces", () {
   final start = CoordinatesState(0, 0, 10, 10);
   final result = aStar(start);
-  if (result == null) {
-    print("Could not find a path");
-    return;
-  }
+  expect(result, isNotNull); if (result == null) return;
   final path = result.reconstructPath();
-  for (final intermediate in path) {
-    if (intermediate.direction == null) {
-      print("Start at ${intermediate.hash()}");
-    } else {
-      print("Go ${intermediate.direction} to ${intermediate.hash()}");
-    }
-  }
-}
+  expect(path, isNotEmpty);
+  expect(path, hasLength(21));
+  final origin = path.first;
+  final destination = path.last;
+  expect(origin.x, start.x);
+  expect(origin.y, start.y);
+  expect(destination.x, start.goalX);
+  expect(destination.y, start.goalY);
+});

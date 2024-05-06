@@ -27,7 +27,6 @@ analyzer:
 
   exclude: 
     - benchmark/*.dart
-    - test/*.dart
 
 linter:
   rules:
