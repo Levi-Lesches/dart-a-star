@@ -5,7 +5,7 @@
 /// - [heuristic]: Calculates the estimated distance to the goal state
 /// - [expand]: Gets all possible neighbor states reachable from this one
 abstract class AStarState<T extends AStarState<T>> {
-  final int depth;
+  final num depth;
   AStarState({required this.depth});
   
   /// The heuristic (estimated cost) of this state. See https://en.wikipedia.org/wiki/Heuristic_(computer_science).
