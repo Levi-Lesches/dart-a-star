@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 
-import "dart:math";
-
 import "package:a_star/a_star.dart";
 
 class CoordinatesState extends AStarState<CoordinatesState> {
@@ -10,13 +8,12 @@ class CoordinatesState extends AStarState<CoordinatesState> {
   final int goalX;
   final int goalY;
   final String? direction;
-  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {this.direction});
+  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {required super.depth, this.direction});
 
   Iterable<CoordinatesState> getNeighbors() => [
-    CoordinatesState(x, y + 1, goalX, goalY, direction: "up"),
-    CoordinatesState(x, y - 1, goalX, goalY, direction: "down"),
-    CoordinatesState(x + 1, y, goalX, goalY, direction: "right"),
-    CoordinatesState(x - 1, y, goalX, goalY, direction: "left"),
+    CoordinatesState(x, y + 1, goalX, goalY, direction: "up", depth: depth + 1),
+    CoordinatesState(x + 1, y, goalX, goalY, direction: "right", depth: depth + 1),
+    CoordinatesState(x - 1, y, goalX, goalY, direction: "left", depth: depth + 1),
   ];
 
   bool get isValid => true;
@@ -29,7 +26,7 @@ class CoordinatesState extends AStarState<CoordinatesState> {
   ];
 
   @override
-  double heuristic() => sqrt(pow(goalX - x, 2) + pow(goalY - y, 2));
+  double heuristic() => (goalX - x).abs() + (goalY - y).abs().toDouble();
 
   @override
   bool isGoal() => x == goalX && y == goalY;
@@ -39,8 +36,8 @@ class CoordinatesState extends AStarState<CoordinatesState> {
 }
 
 void main() {
-  final start = CoordinatesState(0, 0, 10, 10);
-  final result = aStar(start);
+  final start = CoordinatesState(0, 0, 1000, 1000, depth: 0);
+  final result = aStar(start, limit: 3000, verbose: true);
   if (result == null) {
     print("Could not find a path");
     return;

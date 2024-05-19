@@ -12,7 +12,7 @@ import "state.dart";
 /// 
 /// To replay the path from the [state] to the goal state, use [AStarNode.reconstructPath].
 AStarNode<T>? aStar<T extends AStarState<T>>(T state, {bool verbose = false, int limit = 1000}) {
-  final startNode = AStarNode(state, depth: 0);
+  final startNode = AStarNode(state);
   final opened = <AStarNode<T>>{startNode};
   final closed = <AStarNode<T>>{};
   final open = PriorityQueue<AStarNode<T>>()..add(startNode);
@@ -20,7 +20,7 @@ AStarNode<T>? aStar<T extends AStarState<T>>(T state, {bool verbose = false, int
 
   while (open.isNotEmpty) {
     final node = open.removeFirst();
-    if (verbose) print("[$count] Exploring: ${node.hash}");
+    if (verbose) print("[$count] Exploring: ${node.hash} (${node.depth} + ${node.heuristic} = ${node.cost})");
     if (node.state.isGoal()) return node;
     opened.remove(node);
     closed.add(node);
@@ -30,7 +30,7 @@ AStarNode<T>? aStar<T extends AStarState<T>>(T state, {bool verbose = false, int
     }
     for (final newNode in node.expand()) {
       if (closed.contains(newNode) || opened.contains(newNode)) continue;
-      if (verbose) print("[$count]   Got: ${newNode.hash}");
+      if (verbose) print("[$count]   Got: ${newNode.hash} (cost = ${newNode.heuristic})");
       open.add(newNode);
       opened.add(newNode);
     }
