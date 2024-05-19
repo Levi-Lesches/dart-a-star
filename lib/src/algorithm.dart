@@ -12,7 +12,7 @@ import "state.dart";
 /// 
 /// To replay the path from the [state] to the goal state, use [AStarNode.reconstructPath].
 AStarNode<T>? aStar<T extends AStarState<T>>(T state, {bool verbose = false, int limit = 1000}) {
-  final startNode = AStarNode(state, depth: 0);
+  final startNode = AStarNode(state);
   final opened = <AStarNode<T>>{startNode};
   final closed = <AStarNode<T>>{};
   final open = PriorityQueue<AStarNode<T>>()..add(startNode);

@@ -22,14 +22,14 @@ class AStarNode<T extends AStarState<T>> implements Comparable<AStarNode<T>> {
   /// The cached result of calling [AStarState.heuristic] on [state].
   final double heuristic;
   /// The depth of this node in the A* tree. The root has depth 0.
-  final int depth;
+  int get depth => state.depth;
   /// The underlying [AStarState] this node represents.
   final T state;
   /// This node's parent. If this node is the root, [parent] will be null.
   final AStarNode<T>? parent;
 
   /// Creates an A* node based on an [AStarState].
-  AStarNode(this.state, {required this.depth, this.parent}) : 
+  AStarNode(this.state, {this.parent}) : 
     hash = state.hash(),
     heuristic = state.heuristic();
 
@@ -58,7 +58,7 @@ class AStarNode<T extends AStarState<T>> implements Comparable<AStarNode<T>> {
   /// Expands this node into all its child nodes by calling [AStarState.expand].
   Iterable<AStarNode<T>> expand() sync* {
     for (final newState in state.expand()) {
-      yield AStarNode(newState, parent: this, depth: depth + 1);
+      yield AStarNode(newState, parent: this);
     }
   }
 
