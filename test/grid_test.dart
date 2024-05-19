@@ -8,7 +8,7 @@ class CoordinatesState extends AStarState<CoordinatesState> {
   final int goalX;
   final int goalY;
   final String? direction;
-  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {this.direction});
+  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {this.direction, super.depth = 0});
 
   Iterable<CoordinatesState> getNeighbors() => [
     CoordinatesState(x, y + 1, goalX, goalY, direction: "up"),

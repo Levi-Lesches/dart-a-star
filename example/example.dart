@@ -10,13 +10,13 @@ class CoordinatesState extends AStarState<CoordinatesState> {
   final int goalX;
   final int goalY;
   final String? direction;
-  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {this.direction});
+  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {this.direction, required super.depth});
 
   Iterable<CoordinatesState> getNeighbors() => [
-    CoordinatesState(x, y + 1, goalX, goalY, direction: "up"),
-    CoordinatesState(x, y - 1, goalX, goalY, direction: "down"),
-    CoordinatesState(x + 1, y, goalX, goalY, direction: "right"),
-    CoordinatesState(x - 1, y, goalX, goalY, direction: "left"),
+    CoordinatesState(x, y + 1, goalX, goalY, direction: "up", depth: depth + 1),
+    CoordinatesState(x, y - 1, goalX, goalY, direction: "down", depth: depth + 1),
+    CoordinatesState(x + 1, y, goalX, goalY, direction: "right", depth: depth + 1),
+    CoordinatesState(x - 1, y, goalX, goalY, direction: "left", depth: depth + 1),
   ];
 
   bool get isValid => true;
@@ -39,7 +39,7 @@ class CoordinatesState extends AStarState<CoordinatesState> {
 }
 
 void main() {
-  final start = CoordinatesState(0, 0, 10, 10);
+  final start = CoordinatesState(0, 0, 10, 10, depth: 0);
   final result = aStar(start);
   if (result == null) {
     print("Could not find a path");
