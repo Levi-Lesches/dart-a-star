@@ -5,8 +5,11 @@
 /// - [heuristic]: Calculates the estimated distance to the goal state
 /// - [expand]: Gets all possible neighbor states reachable from this one
 abstract class AStarState<T extends AStarState<T>> {
-  final int depth;
-  AStarState({required this.depth});
+  /// How far down the tree this state is.
+  final num depth;
+
+  /// A constructor for the state.
+  const AStarState({required this.depth});
 
   /// The heuristic (estimated cost) of this state. See https://en.wikipedia.org/wiki/Heuristic_(computer_science).
   double heuristic();
@@ -26,4 +29,7 @@ abstract class AStarState<T extends AStarState<T>> {
 
   /// Whether this state is the goal state.
   bool isGoal();
+
+  @override
+  String toString() => hash();
 }

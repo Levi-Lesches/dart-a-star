@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import "package:collection/collection.dart";
-
 import "node.dart";
 import "state.dart";
 

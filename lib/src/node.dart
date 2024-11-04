@@ -24,7 +24,7 @@ class AStarNode<T extends AStarState<T>> implements Comparable<AStarNode<T>> {
   final double heuristic;
 
   /// The depth of this node in the A* tree. The root has depth 0.
-  int get depth => state.depth;
+  num get depth => state.depth;
 
   /// The underlying [AStarState] this node represents.
   final T state;

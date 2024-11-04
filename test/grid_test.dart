@@ -1,7 +1,6 @@
 import "dart:math";
-
-import "package:a_star/a_star.dart";
 import "package:test/test.dart";
+import "package:a_star/a_star.dart";
 
 class CoordinatesState extends AStarState<CoordinatesState> {
   final int x;
