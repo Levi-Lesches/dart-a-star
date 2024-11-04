@@ -7,7 +7,7 @@
 * Re-licensed under the BSD 3-Clause (from Apache 2.0)
 
 ## 3.0.0
-* **Breaking**: Moved `AStarNode.depth` to `AStarState.depth`. This allows you to customize your depth values, which is useful in cases where different actions have different costs
+* **Breaking**: Moved g`AStarNode.depth` to `AStarState.depth`. This allows you to customize your depth values, which is useful in cases where different actions have different costs
 
 ## 2.0.0
 * Updated to Dart 3.0
