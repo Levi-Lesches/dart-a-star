@@ -1,7 +1,7 @@
 name: a_star
-description: A comprehensive A* algorithm. Suitable for anything from physical grids to abstract search spaces. 
+description: A comprehensive A* algorithm. Suitable for anything from physical grids to abstract search spaces.
 homepage: https://github.com/Levi-Lesches/dart-a-star
-version: 3.0.0
+version: 3.1.0
 
 environment:
   sdk: ^3.0.0
@@ -12,4 +12,4 @@ dependencies:
 
 dev_dependencies:
   test: ^1.20.1
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^6.0.0

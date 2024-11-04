@@ -1,5 +1,11 @@
 # CHANGES
 
+## 3.0.1
+
+* Formatting and Pub page updates
+* Simplified example and updated README
+* Re-licensed under the BSD 3-Clause (from Apache 2.0)
+
 ## 3.0.0
 * **Breaking**: Moved `AStarNode.depth` to `AStarState.depth`. This allows you to customize your depth values, which is useful in cases where different actions have different costs
 
