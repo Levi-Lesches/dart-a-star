@@ -8,22 +8,49 @@ class CoordinatesState extends AStarState<CoordinatesState> {
   final int goalX;
   final int goalY;
   final String? direction;
-  CoordinatesState(this.x, this.y, this.goalX, this.goalY, {required super.depth, this.direction});
+  CoordinatesState(
+    this.x,
+    this.y,
+    this.goalX,
+    this.goalY, {
+    required super.depth,
+    this.direction,
+  });
 
   Iterable<CoordinatesState> getNeighbors() => [
-    CoordinatesState(x, y + 1, goalX, goalY, direction: "up", depth: depth + 1),
-    CoordinatesState(x + 1, y, goalX, goalY, direction: "right", depth: depth + 1),
-    CoordinatesState(x - 1, y, goalX, goalY, direction: "left", depth: depth + 1),
-  ];
+        CoordinatesState(
+          x,
+          y + 1,
+          goalX,
+          goalY,
+          direction: "up",
+          depth: depth + 1,
+        ),
+        CoordinatesState(
+          x + 1,
+          y,
+          goalX,
+          goalY,
+          direction: "right",
+          depth: depth + 1,
+        ),
+        CoordinatesState(
+          x - 1,
+          y,
+          goalX,
+          goalY,
+          direction: "left",
+          depth: depth + 1,
+        ),
+      ];
 
   bool get isValid => true;
 
   @override
   Iterable<CoordinatesState> expand() => [
-    for (final neighbor in getNeighbors())
-      if (neighbor.isValid)
-        neighbor,
-  ];
+        for (final neighbor in getNeighbors())
+          if (neighbor.isValid) neighbor,
+      ];
 
   @override
   double heuristic() => (goalX - x).abs() + (goalY - y).abs().toDouble();
